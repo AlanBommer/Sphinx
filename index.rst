@@ -10,7 +10,7 @@ Welcome to blocsSmarthPath's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   Blocs
+   blocs
 
 Indices and tables
 ==================
