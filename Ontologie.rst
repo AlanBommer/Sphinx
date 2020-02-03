@@ -30,19 +30,17 @@ Préambule technique :
 
 .. topic:: Gestion des nodes
 
-   Un node est un point de repère permettant au programme de naviguer au sein d'un scénario et de renvoyer à différentes lignes du scénario.
-   Les conventions suivantes permettent la rédaction d'un scénario cohérent.
+   Un node est un point de repère permettant au programme de naviguer au sein d'un scénario. Chaque node représente une action. C'est l'élément utilisé dans le code pour traiter les scénarios.
 
    1. La première action du scénario renvoie au premier node du scénario, indexé '0'
-   2. Les nodes sont rentrés en paramètres dans les actions.
-   3. Les nodes possèdent trois états différents :
+   2. Un scénario comprend plusieurs actions. Il existe 3 possibilités permettant d'exprimer quelle est la prochaine action à exécuter.
+   3. Par défaut, la prochaine action exécutée est la ligne suivante du scénario.
+   4. Nous pouvons également, en paramètre de l'action, définir le prochain noeud à exécuter : 
 
-      * *actualNode* = node de l'action actuelle, il n'est jamais exprimé.
-      * *nextNode* = node qui sera traité à la fin de l'action, par défaut 'nextNode' renvoie au node de l'action suivante'
-      * *possibleNode* = node qui sera appelé si certaines conditions sont réunies lors l'exécution de l'action actuelle.
-   4. En cas d'erreur lors de l'exécution, si un 'possibleNode' est paramétré alors il sera utilisé par défaut pour poursuivre le scénario.
-   5. En cas d'erreur lors de l'exécution, si un 'nextNode' est paramétré, et qu'il n'y a aucun 'possibleNode', alors il sera utilisé par défaut pour poursuivre le scénario.
-   6. En cas d'erreur lors de l'exécution et en cas d'absence de paramétrage de node, alors la ligne suivante du scénario sera exécutée.
+      * *nextNode* = node qui sera traité à la fin de l'action si elle s'éxécute correctement, par défaut 'nextNode' renvoie au node de l'action suivante'
+      * *possibleNode* = node qui sera appelé si l'action actuelle ne remplit pas son objectif *(ex : si l'action FindDate ne trouve pas de date ou si l'action ClickPage ne trouve pas de bouton 'Page suivante' )*
+
+   5. Cas particulier. En cas d'erreur lors de l'exécution, s'il n'y a aucun 'possibleNode', alors le scénario s'arrête.
 
 .. topic:: Gestion des tags
 
@@ -60,12 +58,12 @@ Action GoPage :
 
 .. topic:: Présentation :
 
-   L'action **GoPage** permet d accéder à la page web des offres.
-	 Il nécessite en entrée un lien internet qui renvoie à la page d offre d emplois de l entreprise visée.
+   L'action **GoPage** permet d'accéder à la page web des offres.
+	 Il nécessite en entrée un lien internet qui renvoie à la page d'offre d'emplois de l entreprise visée.
 
-   Paramètres :
+   Paramètre :
 
-      * 'url' : variable principale de l'action, valeur : adresse url renvoyant à la page web du site d'offre d'emplois.
+      * 'url' : variable principale de l'action. Valeur : adresse url renvoyant à la page web du site d'offre d'emplois.
 
 .. topic:: Exemple :
 
@@ -81,9 +79,9 @@ Action ClickPage
 	L'action **ClickPage** permet de cliquer sur un lien url spécifique : fonction recherche, accéder à l'offre d'emploi, accéder à la page suivante du site.
 	Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
 
-  Paramètres :
+  Paramètre :
 
-     * 'path' : variable principale de l'action, valeur : XPATH des balises HTML
+     * 'path' : variable principale de l'action. Valeur : XPATH des balises HTML
 
 .. topic:: Exemple :
    
@@ -107,7 +105,7 @@ Action SaveJob
 
 .. topic:: Présentation :
 
-  L'action **SaveJob** permet de sauvegarder l'offre d'emploi.
+  L'action **SaveJob** permet de sauvegarder la page HTML de l'offre d'emploi.
 	Il ne nécessite pas de paramètre. Le programme est chargé d'effectuer la sauvegarde locale puis le transfert sur la base de donnée.
 
 .. topic:: Exemple :
@@ -124,9 +122,9 @@ Action Scroll
 	L'action **Scroll** permet de simuler l'action de la souris afin de charger les données dynamiques du site.
 	Il nécessite en entrée un entier int relatif à la distance nécessaire pour afficher les nouvelles informations.
 
-  Paramètres :
+  Paramètre :
 
-     * 'size' : variable principale de l'action, valeur : taille du scroll nécessaire.
+     * 'size' : variable principale de l'action. Valeur : taille du scroll nécessaire.
 
 .. topic:: Exemple :
 
@@ -142,9 +140,9 @@ Action GoBack
 	L'action **GoBack** permet d'effectuer un retour en arrière pour retourner sur la page url précédente.
 	Il nécessite en entrée le renvoi sur l'action à exécuter à l'issue
 
-  Paramètres :
+  Paramètre :
 
-     * 'nextNode' : valeur principale de l'action, valeur : node de l'action à exécuter à l'issue.
+     * 'nextNode' : valeur principale de l'action. Valeur : node de l'action à exécuter à l'issue.
 
 .. topic:: Exemple :
 
@@ -160,9 +158,9 @@ Action FindDate
 	L'action **FindDate** permet de repérer la date présente dans la page. En interne, il déterminera si l'offre d'emploi est intéressante ou non (*i.e* si les offres d'emploi ont été publiées après une date pré-déterminée)
 	Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
 
-  Paramètres :
+  Paramètre :
 
-     * 'path' : variable principale de l'action, valeur : XPATH des balises HTML
+     * 'path' : variable principale de l'action. Valeur : XPATH des balises HTML
 
 .. topic:: Exemple :
    
@@ -201,7 +199,7 @@ Recommandations :
 
    .. warning::
 
-      * Des boucles infinies peuvent être créées lors de la rédaction des 'possibleNode'
+      * Des boucles infinies peuvent être créées lors de la rédaction des 'possibleNode'. Bien veiller à l'enchainement des actions.
       * Il est recommandé de vérifier la synthaxe des scénarios sur le site : 'http://www.yamllint.com/'
 
 
