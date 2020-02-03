@@ -11,10 +11,3 @@ Documentation du projet industriel ECP : SmartCrawl
    :caption: Contents:
 
    Ontologie
-
-..Indices and tables
-..==================
-
-..* :ref:`genindex`
-..* :ref:`modindex`
-..* :ref:`search`
