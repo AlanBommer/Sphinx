@@ -202,7 +202,7 @@ Recommandations :
    .. warning::
 
       * Des boucles infinies peuvent être créées lors de la rédaction des 'possibleNode'
-      * Il est recommander de vérifier la synthaxe des scénarios sur le site : 'http://www.yamllint.com/'
+      * Il est recommandé de vérifier la synthaxe des scénarios sur le site : 'http://www.yamllint.com/'
 
 
 Exemples de scénarios / fichier '*scenarii.yaml*'
