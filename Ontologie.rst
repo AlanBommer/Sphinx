@@ -35,7 +35,7 @@ Préambule technique :
    1. La première action du scénario renvoie au premier node du scénario, indexé '0'
    2. Un scénario comprend plusieurs actions. Il existe 3 possibilités permettant d'exprimer quelle est la prochaine action à exécuter.
    3. Par défaut, la prochaine action exécutée est la ligne suivante du scénario.
-   4. Nous pouvons également, en paramètre de l'action, définir le prochain noeud à exécuter : 
+   4. Nous pouvons également, en paramètre de l'action, définir le prochain node à exécuter : 
 
       * *nextNode* = node qui sera traité à la fin de l'action si elle s'éxécute correctement, par défaut 'nextNode' renvoie au node de l'action suivante'
       * *possibleNode* = node qui sera appelé si l'action actuelle ne remplit pas son objectif *(ex : si l'action FindDate ne trouve pas de date ou si l'action ClickPage ne trouve pas de bouton 'Page suivante' )*
