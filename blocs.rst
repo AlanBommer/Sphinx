@@ -9,10 +9,10 @@ Le programme 'SmartCrawl' s'insère au début du processus du 'SmartPath'. Il a 
 A cet effet, 'SmartCrawl' "visite" les sites listés et "lit" les offres d'emploi, sauvegarde celles qui l'intéresse avant de les transmettre à la base de donnée permettant ensuite à 'SmartPath' de les traiter.
 Pour permettre à 'SmartCrawl' de visiter les sites, l'opérateur doit lui fournir les 'scénarios' des sites web.
 
-Un scénario est rédigé par site web. Les scénarios écrits au format YAML et sont regroupés dans un même fichier '*scenarii.yaml*'. Un exemple se trouve à la fin du présent document.
-Un scénario est une liste d'actions rédigées au format YAML. 
+Un scénario est rédigé par site web. Les scénarios sont écrits au format YAML et sont regroupés dans un même fichier '*scenarii.yaml*'. Un exemple se trouve à la fin du présent document.
+Un scénario est une liste d'actions rédigées au format YAML.
 
-Les actions sont celles qu'auraient du faire un utilisateur humain pour parcourir les offres d'emploi. Par conséquent, la visite et l'étude des sites web est nécessaire afin de rédiger les scénarios. Elles sont besoin pour fonctionner de différents paramètres d'entrée.
+Les actions sont celles qu'auraient dû faire un utilisateur humain pour parcourir les offres d'emploi. Par conséquent, la visite et l'étude des sites web est nécessaire afin de rédiger les scénarios. Elles ont besoin pour fonctionner de différents paramètres d'entrée.
 
 Préambule technique :
 ======================
@@ -41,14 +41,14 @@ Préambule technique :
       * *nextNode* = node qui sera traité à la fin de l'action, par défaut 'nextNode' renvoie au node de l'action suivante'
       * *possibleNode* = node qui sera appelé si certaines conditions sont réunies lors l'exécution de l'action actuelle.
    4. En cas d'erreur lors de l'exécution, si un 'possibleNode' est paramétré alors il sera utilisé par défaut pour poursuivre le scénario.
-   5. En cas d'erreur lors de l'exécution, si un 'nextNode' est paramétré et aucun 'possibleNode' alors il sera utilisé par défaut pour poursuivre le scénario.
-   6. En cas d'erreur lors de l'exécution, en cas d'absence de paramétrage de node alors la ligne suivante du scénario sera exécutée.
+   5. En cas d'erreur lors de l'exécution, si un 'nextNode' est paramétré, et qu'il n'y a aucun 'possibleNode', alors il sera utilisé par défaut pour poursuivre le scénario.
+   6. En cas d'erreur lors de l'exécution et en cas d'absence de paramétrage de node, alors la ligne suivante du scénario sera exécutée.
 
 .. topic:: Gestion des tags
 
    #. Un tag est défini selon deux paramètres. # Préciser
    #. '*class*', '*name*', '*target*'' sont les types de balises recherchées
-   #. Les types de balises sont liées à une chaine de caractère
+   #. Les types de balises sont liés à une chaine de caractères
    #. En cas de recherche dans des balises en cascade, les tags sont imbriqués dans un dictionnaire
    #. En cas de recherche dans une balise d un niveau équivalent, on utilisera "index : n" pour renvoyer à la balise \ *n*\ -suivante
 
@@ -92,7 +92,7 @@ Action ClickPage
       ClickPage: {'path' : /html/body/div[2]/div[2]/div[1]/div[4]/div/div[2]/ul[2]/li[13]/a, 'nextNode' : 1}
       ClickPage: {'tag' : {'class' : 'type type-28 viewport', 'tag' : {'name' : 'a'}}, 'possibleNode' : 5}
 
-      ClickPage : référence du action utilisé
+      ClickPage : référence de l'action utilisée
       'tag' : marqueur lié à la recherche HTML
       'class' : type du tag recherché
       'type type-28 viewport' : valeur de la variable 'class'
@@ -126,7 +126,7 @@ Action Scroll
 
   Paramètres :
 
-     * 'size' : variable principale de l'action, valeur : taille du scroll nécéssaire.
+     * 'size' : variable principale de l'action, valeur : taille du scroll nécessaire.
 
 .. topic:: Exemple :
 
@@ -157,7 +157,7 @@ Action FindDate
 
 .. topic:: Présentation :
 
-	L'action **FindDate** permet de repérer la date présente dans la page. En interne, il déterminera si l'offre d'emploi est intéressante ou non.
+	L'action **FindDate** permet de repérer la date présente dans la page. En interne, il déterminera si l'offre d'emploi est intéressante ou non (*i.e* si les offres d'emploi ont été publiées après une date pré-déterminée)
 	Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
 
   Paramètres :
@@ -171,7 +171,7 @@ Action FindDate
       FindDate: {'tag' : /html/body/div[2]/div[2]/div[1]/div[4]/div/div[2]/ul[1]/li[1]/a/div[2]/span, 'possibleNode' : 5}
       FindDate: {'tag' : {'class' : 'ts-offer-card-content offerContent', 'tag' : {'name' : 'li', 'index' : 1 }}}
 
-      FindDate : référence du action utilisé
+      FindDate : référence de l'action utilisée
       'tag' : marqueur lié à la recherche HTML
       'class' : type du tag recherché
       'ts-offer-card-content offerContent' : valeur de la variable 'class'
@@ -182,7 +182,7 @@ Action FindDate
 
    **Note** : Exemple ici de l'utilisation de l'index pour la recherche d'une balise au même niveau que la précédente.
 
-Récapitulatif des actions généralisés :
+Récapitulatif des actions généralisées :
 ========================================
 
 .. code-block:: YAML 
@@ -196,12 +196,12 @@ Récapitulatif des actions généralisés :
          - GoBack: {'nextNode' : int} #Je reviens en arrière et lance le action du node référencé
          - ClickPage: {'tag' : {'class' : str}, 'nextNode' : int, 'possibleNode' : int} # Je clique sur le lien permettant de continuer la recherche d'emploi et lance l'un des deux actions des nodes référencés*
 
-Recommandation :
+Recommandations :
 =================
 
    .. warning::
 
-      * Des boucles infinies peuvent être crées lors de la rédaction des 'possibleNode'
+      * Des boucles infinies peuvent être créées lors de la rédaction des 'possibleNode'
       * Il est recommander de vérifier la synthaxe des scénarios sur le site : 'http://www.yamllint.com/'
 
 
