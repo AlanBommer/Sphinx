@@ -18,8 +18,8 @@ import sys
 # -- Project information -----------------------------------------------------
 
 project = 'Projet Industriel : SmartCrawl'
-copyright = '2020, Alan'
-author = 'Jérémie FABRE, Alan JOUBIOUX, Nicolas SCAËROU'
+copyright = '2020, Jérémie Alan et Nicolas'
+author = 'Jérémie FABRE, Alan JOUBIOUX etNicolas SCAËROU'
 
 
 # -- General configuration ---------------------------------------------------
