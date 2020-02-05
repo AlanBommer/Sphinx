@@ -24,25 +24,31 @@ Liste des actions
 
    #. GoPage, pour se rendre sur une page donnée
    #. ClickPage, pour clicker sur un lien donné
-   #. SaveJob, pour sauvegarder l'emploi
+   #. SaveJob, pour enregistrer la page HTML de l'emploi
    #. Scroll, pour faire dérouler la page actuelle
    #. GoBack, pour revenir en arrière
    #. FindDate, pour chercher la date des offres d'emploi dans la page actuelle
 
-Gestion des nodes
-++++++++++++++++++
+Gestion des actions
+++++++++++++++++++++
 
-   Un node est un point de repère permettant au programme de naviguer au sein d'un scénario. Chaque node représente une action. C'est l'élément utilisé dans le code pour traiter les scénarios.
+   1. Un scénario comprend plusieurs actions. La première action du scénario est indexée '0'
+   2. Il existe deux clés permettant d'exprimer quelle est la prochaine action à exécuter. La combinaison de plusieurs couples (action, clé) permet d'effectuer des boucles et de parcourir tout le site internet.
+   3. Les clés suivantes permettent de définir la prochaine action à exécuter : 
 
-   1. La première action du scénario renvoie au premier node du scénario, indexé '0'
-   2. Un scénario comprend plusieurs actions. Il existe 3 possibilités permettant d'exprimer quelle est la prochaine action à exécuter.
-   3. Par défaut, la prochaine action exécutée est la ligne suivante du scénario.
-   4. Nous pouvons également, en paramètre de l'action, définir le prochain node à exécuter : 
+      * *nextAction* = action qui sera traitée à la fin de l'action actuelle si elle s'éxécute correctement, par défaut 'nextAction' renvoie à l'action de la ligne suivante du scénario
+      * *possibleAction* = action qui sera appelée si l'action actuelle ne remplit pas son objectif *(ex : si l'action "FindDate" ne trouve pas de date ou si l'action "ClickPage" ne trouve pas de bouton 'Page suivante' )*
 
-      * *nextNode* = node qui sera traité à la fin de l'action si elle s'éxécute correctement, par défaut 'nextNode' renvoie au node de l'action suivante'
-      * *possibleNode* = node qui sera appelé si l'action actuelle ne remplit pas son objectif *(ex : si l'action FindDate ne trouve pas de date ou si l'action "ClickPage" ne trouve pas de bouton 'Page suivante' )*
+   4. La valeur des paramètres 'nextAction' et 'possibleAction' est de type **int** et est définit par l'index dans le scénario de l'action à appeller. 
+   5. Cas particulier. En cas d'erreur lors de l'exécution, s'il n'y a aucun 'possibleAction', alors le scénario s'arrête.
 
-   5. Cas particulier. En cas d'erreur lors de l'exécution, s'il n'y a aucun 'possibleNode', alors le scénario s'arrête.
+   .. code-block:: YAML
+
+      - Exemple:
+            - GoPage: {'url' : 'www.example.com'}
+            - Exemple1: {'possibleAction' : 3}
+            - Exemple2: { ... }
+            - Exemple3: {'nextAction' : 1}
 
 .. _Gestiontags:
 
@@ -55,33 +61,33 @@ Gestion des tags
 
       * Pour une balise : clé = 'balise' & valeur = 'a', 'img', 'span', 'div', 'li',...
 
-          .. code-block:: YAML
+             .. code-block:: YAML
 
-            - Exemple: {'balise' : 'a'}
+               - Exemple: {'balise' : 'a'}
 
       * Pour un attribut : clé = 'href', 'class', 'id',... & valeur = 'string'
 
-          .. code-block:: YAML
+             .. code-block:: YAML
 
-            - Exemple: {'class' : 'labelOffer'}
+               - Exemple: {'class' : 'labelOffer'}
 
       * Pour un texte brut : clé = 'texte' & valeur = 'string'
 
-          .. code-block:: YAML
+             .. code-block:: YAML
 
-            - Exemple: {'texte' : '02/05/2020'}
+               - Exemple: {'texte' : '02/05/2020'}
 
   4. Chaque fois que nous écrivons un couple (clé,valeur) nous devons le spécifier dans un dictionnaire dont la clé est 'tag'.
 
     .. code-block:: YAML
 
-       - Exemple: {'tag' : {'class' : 'labelOffer'}}
+          - Exemple: {'tag' : {'class' : 'labelOffer'}}
 
   5. Afin d'arriver à la donnée spécifiée, il sera parfois nécessaire de parcourir différents tags inclus les uns dans les autres. Pour cela, il est possible d'effectuer une imbrication de tags.
 
      .. code-block:: YAML
 
-       - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a'}}
+          - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a'}}
 
   Ici, le programme va rechercher un tag correspondant à un attribut 'class' dont la valeur est 'labelOffer'. Une fois déterminé, il va rechercher à l'intérieur de ce bloc html le premier tag correspondant à la balise 'a'. Pour explication, lors d'une recherche d'un tag, le programme récupèra une liste de tous les résultats correspondants à ce tag.
 
@@ -94,17 +100,17 @@ Gestion des tags
     .. code-block:: HTML
 
       <div>
-        <span class = 'labelOffer' href = 'url'>
-          <a> Publié le </a> <!-- Résultat de la recherche ci-dessus -->
-          <a> 05/02/2020 </a>
-        </span>
+           <span class = 'labelOffer' href = 'url'>
+             <a> Publié le </a> <!-- Résultat de la recherche ci-dessus -->
+             <a> 05/02/2020 </a>
+           </span>
       </div>
 
   7. Suite à la recherche d'un tag, il sera parfois nécessaire d'accéder à un élément spécifique de la liste des résultats. Pour cela, il est possible de définir le paramètre 'mark : n' avec le numéro de l'indice recherché.
 
     .. code-block:: YAML
 
-       - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a', 'mark' : 1}}
+          - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a', 'mark' : 1}}
 
   Ici, nous prendrons l'indice numéro 1 de la liste des résultats. Dans l'exemple ci-dessus, le résultat sera donc '05/02/2020' et non 'Publié le'.
 
@@ -126,12 +132,12 @@ Gestion des index
    .. code-block:: YAML
 
       - EXEMPLE:
-        - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
-        - ClickPage: {'tag' : {'class': 'primaryButton'}} # Noeud permettant d'accéder aux offres d'emploi
-        - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleNode' : 5} # Je marque l'emplacement de ma première balise liée à la date.
-        - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise liée à mon emploi.
-        - SaveJob:
-        - ...
+           - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
+           - ClickPage: {'tag' : {'class': 'primaryButton'}} # Noeud permettant d'accéder aux offres d'emploi
+           - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5} # Je marque l'emplacement de ma première balise liée à la date.
+           - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise liée à mon emploi.
+           - SaveJob:
+           - ...
 
   3. Ainsi, le programme peut naviguer de noeud en noeud en connaissant les balises déjà visitées.
 
@@ -140,13 +146,13 @@ Gestion des index
    .. code-block:: YAML
 
       - EXEMPLE:
-        - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
-        - ClickPage: {'tag' : {'class': 'primaryButton'}} # Action permettant d'accéder aux offres d'emploi
-        - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleNode' : 5} # Je marque l'emplacement de ma première balise liée à la date.
-        - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
-        - SaveJob:
-        - GoBack: {'nextNode' : 1} # Je reviens au node 1 et repère la balise déjà visitée grâce au marqueur déposé
-        - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextNode' : 1} # Remise à zéro du marqueur défini dans le noeud 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
+           - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
+           - ClickPage: {'tag' : {'class': 'primaryButton'}} # Action permettant d'accéder aux offres d'emploi
+           - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5} # Je marque l'emplacement de ma première balise liée à la date.
+           - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
+           - SaveJob:
+           - GoBack: {'nextAction' : 1} # Je reviens au node 1 et repère la balise déjà visitée grâce au marqueur déposé
+           - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Remise à zéro du marqueur défini dans le noeud 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
 
 Description des actions :
 =========================
@@ -200,15 +206,15 @@ Action Scroll
 
 .. topic:: Présentation :
 
-   L'action **Scroll** permet de simuler l'action de la souris afin de charger les données dynamiques du site. Il nécessite en entrée un entier int relatif à la distance nécessaire pour afficher les nouvelles informations.
+   L'action **Scroll** permet de simuler l'action de la souris afin de charger les données dynamiques du site. Il nécessite en entrée un type **int** relatif à la distance nécessaire pour afficher les nouvelles informations.
 
    Paramètre :
-      * 'size' : variable principale de l'action. Valeur : taille du scroll nécessaire.
+      * 'size' : variable principale de l'action. Valeur : taille du scroll nécessaire, type **int**.
 
 .. code-block:: YAML
 
    - EXEMPLE:
-      - Scroll : {'size' : 10, 'possibleNode' : 5}
+      - Scroll : {'size' : 10, 'possibleAction' : 5}
 
 Action GoBack
 ++++++++++++++
@@ -219,12 +225,12 @@ Action GoBack
 
    Paramètre :
 
-      * 'nextNode' : valeur principale de l'action. Valeur : node de l'action à exécuter à l'issue.
+      * 'nextAction' : variable principale de l'action. Valeur : index de l'action à exécuter à l'issue, type *int*.
 
 .. code-block:: YAML
 
    - EXEMPLE:
-      - GoBack: {'nextNode' : 2}
+      - GoBack: {'nextAction' : 2}
 
 Action FindDate
 ++++++++++++++++
@@ -240,114 +246,89 @@ Action FindDate
 .. code-block:: YAML
 
    - EXEMPLE:
-      - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'possibleNode' : 5}
+      - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'possibleAction' : 5}
 
-Exemple d'un scénario générique : 
-=================================
+Exemple générique d'un scénario  : 
+====================================
 
 .. code-block:: YAML 
 
    - EXEMPLE:
       - GoPage: {'url': "https://www.exemple.com/fr/emplois"} # Navigation jusqu'à la page des offres d'emplois
-      - FindDate: {'tag' : {'class' : 'date'}, 'persitentIndex', 'possibleNode' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends au noeud 5
+      - FindDate: {'tag' : {'class' : 'date'}, 'persitentIndex', 'possibleAction' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends au noeud 5
       - ClickPage: {'tag' : {'class' : 'job-offer'},'persitentIndex'} # Navigation vers la page de l'offre d'emploi et dépôt d'un marqueur
       - SaveJob: # Sauvegarde de la page HTML en local de l'offre d'emploi
-      - GoBack: {'nextNode' : 1} # Navigation vers la page précédente
-      - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextNode' : 1} # Navigation vers la page suivante des offres d'emploi après le noeud 1
+      - GoBack: {'nextAction' : 1} # Navigation vers la page précédente
+      - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Navigation vers la page suivante des offres d'emploi après le noeud 1
 
 Recommandations :
-=================
+==================
 
    .. warning::
 
-      * Des boucles infinies peuvent être créées lors de la rédaction des 'possibleNode'. Bien veiller à l'enchainement des actions.
+      * Des boucles infinies peuvent être créées lors de la rédaction des 'possibleAction'. Bien veiller à l'enchainement des actions.
       * Il est recommandé de vérifier la synthaxe des scénarios sur le site : 'http://www.yamllint.com/'
 
 
 Exemples de scénarios / fichier '*scenarii.yaml*'
 ==================================================
 
-.. topic:: SAFRAN
+.. topic:: scenarii.yaml :
 
    .. code-block:: YAML
 
       - SAFRAN:
-        - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
-        - FindDate: {'tag' : {'class' : 'date'} 'possibleNode' : 5}
-        - ClickPage: {'tag' : {'class' : 'offer-card'}}
-        - SaveJob:
-        - GoBack: {'nextNode' : 1}
-        - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'a'}}, 'nextNode' : 1}
+         - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
+         - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5}
+         - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'}
+         - SaveJob:
+         - GoBack: {'nextAction' : 1}
+         - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'a'}, 'resetIndex' : [1,2]}, 'nextAction' : 1}
 
-.. topic:: BNP
+      - BNP:
+         - GoPage: {'url': "https://group.bnpparibas/emploi-carriere/toutes-offres-emploi/france"}
+         - Scroll: {'size' : 10, 'possibleAction' : 5}
+         - ClickPage: {'tag' : {'balise' : 'ul', 'tag' : {'balise' : li'}, 'persistentIndex'}}
+         - SaveJob:
+         - GoBack: {'nextAction' : 1}
+         - ClickPage: {'tag' : {'class' : 'progress-buton elastic show-more'}, 'nextAction' : 1, 'possibleAction' : 6}
+         - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'a'}}, 'resetIndex' : [2], 'nextAction' : 1}
 
-  .. code-block:: YAML
-
-   - BNP:
-       - GoPage: {'url': "https://group.bnpparibas/emploi-carriere/toutes-offres-emploi/france"}
-       - Scroll: {'size' : 10, 'possibleNode' : 5}
-       - ClickPage: {'tag' : {'class' : }}
-       - SaveJob:
-       - GoBack: {'nextNode' : 1}
-       - ClickPage: {'tag' : 'progress-buton elastic show-more', 'nextNode' : 1, 'possibleNode' : 6}
-       - ClickPage: {'tag' : 'next', 'nextNode' : 1}
-
-.. topic:: SODEXO
-
-  .. code-block:: YAML
-
-     - SODEXO:
-       - GoPage: {'url': "https://fr.sodexo.com/home/nous-rejoindre/rejoignez-nos-equipes.html"}
-       - FindDate: {'tag' : ts-offer-card-content offerContent', 'index' : 1 }
-       - ClickPage: {'tag' : 'ts-offer-card__title'}
-       - SaveJob:
-       - GoBack: {'nextNode' : 1}
-       - ClickPage: {'tag' : 'ts-ol-pagination-list-item__link ts-ol-pagination-list-item__link--next', 'nextNode' : 1}
-
-.. topic:: TOTAL
-
-  .. code-block:: YAML
+      - SODEXO:
+         - GoPage: {'url': "https://sodexo-recrute.talent-soft.com/accueil.aspx?LCID=1036"}
+         - FindDate: {'tag' : {'class' : 'ts-offer-card-content offerContent','tag' : {'balise' : 'li', 'index' : 2}}, 'persistentIndex', 'possiblNode' : 5}
+         - ClickPage: {'tag' : {'class' : 'ts-offer-card Layer', 'tag' : {'balise' : 'h3'}}, 'persistentIndex'}
+         - SaveJob:
+         - GoBack: {'nextAction' : 1}
+         - ClickPage: {} # Pas assez d'offre lors de la rédaction pour avoir une page suivante
 
       - TOTAL:
-        - GoPage: {'url' : 'https://krb-sjobs.brassring.com/tgnewui/search/home/home?partnerid=30080&siteid=6559#Pays=France&keyWordSearch='}
-        - ClickPage: {'tag' : 'primaryButton ladda-button ng-binding'}
-        - FindDate: {'tag' : 'jobProperty position1'}
-        - ClickPage: {'tag' : 'jobProperty jobtitle'}
-        - SaveJob:        
-        - GoBack: {'nextNode' : 2}
-        - ClickPage: {'tag' : showMoreJobs UnderLineLink ng-binding', 'nextNode' : 2}
-
-.. topic:: CANAL
-
-  .. code-block:: YAML
+         - GoPage: {'url' : 'https://krb-sjobs.brassring.com/tgnewui/search/home/home?partnerid=30080&siteid=6559#Pays=France&keyWordSearch='}
+         - ClickPage: {'tag' : {'id' : 'searchControls_BUTTON_2'}}
+         - FindDate: {'tag' : {'class' : 'jobProperty position1'}, 'persistentIndex', 'possibleAction' : 6}
+         - ClickPage: {'tag' : {'class' : 'jobProperty jobtitle'}, 'persistentIndex'}
+         - SaveJob:           
+         - GoBack: {'nextAction' : 2}
+         - ClickPage: {'tag' : {'id' : 'showMoreJobs'}, 'nextAction' : 2}
 
       - CANAL:
-        - GoPage: {'url' : 'https://www.vousmeritezcanalplus.com/metiers.html'}
-        - FindDate: {'tag' : 'srJobListPublishedSince'}
-        - ClickPage: {'tag' : 'srJobListJobOdd'}
-        - SaveJob:
-        - GoBack: {'nextNode' : 1}
- 
-.. topic:: DASSAULT
-
-  .. code-block:: YAML
+         - GoPage: {'url' : 'https://jobs.canalplus.com/nos-offres/'}
+         - ClickPage: {'tag' : {'balise' : 'ul', 'tag' : {'balise' : 'li', 'tag' : {'balise' : 'a'}}}, 'persistentIndex'}
+         - SaveJob:
+         - GoBack: {'nextAction' : 1}
 
       - DASSAULT:
-        - GoPage: {'url' : 'https://careers.3ds.com/fr/jobs?woc=%7B%22pays%22%3A%5B%22pays%2Ffrance%22%5D%7D'}
-        - ClickPage: {'tag' : 'ds-card ds-card--lines ds-card--image ', 'possibleNode' : 4}
-        - SaveJob:
-        - GoBack: {'nextNode' : 1}
-        - ClickPage: {'tag' : 'ds-pagination__next', 'nextNode' : 1}
-
-.. topic:: ACCOR
-
-  .. code-block:: YAML
+         - GoPage: {'url' : 'https://careers.3ds.com/fr/jobs?woc=%7B%22pays%22%3A%5B%22pays%2Ffrance%22%5D%7D'}
+         - ClickPage: {'tag' : {'class' : 'ds-card ds-card--lines ds-card--image'}, 'persistentIndex', 'possibleAction' : 4}
+         - SaveJob:
+         - GoBack: {'nextAction' : 1}
+         - ClickPage: {'tag' : {'class' : 'ds-pagination__next', 'tag' : {'balise' : 'a'}}, 'resetIndex' : [1], 'nextAction' : 1}
 
       - ACCOR:
-        - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
-        - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'possibleNode' : 5}
-        - ClickPage: {'tag' : {'class' : labelOffer', 'tag' : {'balise' : 'a'}}
-        - SaveJob:
-        - GoBack: {'nextNode' : 1}
-        - CLikPage: {'tag' : {'class' : 'nextPage', {'class' : 'on'}}, 'nextNode' : 1}
+         - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
+         - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'persistentIndex', 'possibleAction' : 5}
+         - ClickPage: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a'}}, 'persistentIndex'}
+         - SaveJob:
+         - GoBack: {'nextAction' : 1}
+         - CLikPage: {'tag' : {'class' : 'nextPage', {'class' : 'on', 'tag' : {'balise' : 'a'}}}, 'resetIndex' : [1,2], 'nextAction' : 1}
 
