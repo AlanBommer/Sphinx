@@ -44,6 +44,8 @@ Gestion des nodes
 
    5. Cas particulier. En cas d'erreur lors de l'exécution, s'il n'y a aucun 'possibleNode', alors le scénario s'arrête.
 
+.. _Gestiontags:
+
 Gestion des tags
 +++++++++++++++++
 
@@ -154,11 +156,11 @@ Action GoPage :
 
 .. topic:: Présentation :
 
-   L'action **GoPage** permet d'accéder à la page web des offres. Il nécessite en entrée un lien internet qui renvoie à la page d'offre d'emplois de l'entreprise visée.
+   L'action **GoPage** permet d'accéder à la page web des offres. Il nécessite en entrée un lien internet qui renvoie à la page des offres d'emplois de l'entreprise visée.
 
    Paramètre :
 
-      * 'url' : variable principale de l'action. Valeur : adresse url renvoyant à la page web du site d'offre d'emplois.
+      * 'url' : variable principale de l'action. Valeur : adresse url renvoyant à la page web des offres d'emplois.
 
 .. code-block:: YAML
 
@@ -174,12 +176,12 @@ Action ClickPage
 
    Paramètre :
 
-      * 'tag' : variable principale de l'action. Valeur : encapsulage des tags (**cf "Gestion des tags"**)
+      * 'tag' : variable principale de l'action. Valeur : encapsulage des tags (voir :ref:`Gestiontags`)
 
 .. code-block:: YAML
 
    - EXEMPLE:
-      - ClickPage: {'tag' : {'class' : labelOffer', 'tag' : {'balise' : 'a'}}
+      - ClickPage: {'tag' : {'class' : labelOffer', 'tag' : {'balise' : 'a'}, 'persistentIndex'}
 
 Action SaveJob
 +++++++++++++++
@@ -229,8 +231,7 @@ Action FindDate
 
 .. topic:: Présentation :
 
-   L'action **FindDate** permet de repérer la date présente dans la page. En interne, il déterminera si l'offre d'emploi est intéressante ou non (*i.e* si les offres d'emploi ont été publiées après une date pré-déterminée).
-   Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
+   L'action **FindDate** permet de repérer la date présente dans la page. En interne, il déterminera si l'offre d'emploi est intéressante ou non (*i.e* si les offres d'emploi ont été publiées après une date pré-déterminée). Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
 
    Paramètre :
 
