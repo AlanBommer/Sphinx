@@ -141,7 +141,7 @@ Gestion des index
 
   3. Ainsi, le programme peut naviguer de noeud en noeud en connaissant les balises déjà visitées.
 
-  4. La réinitialisation de l'index persistant se fait dans le paramétrage d'une action. On utilise la clé 'resetIndex' et une valeur 'liste[int]' relative au numéro du node dans lequel le marqueur a été initialisé.
+  4. La réinitialisation de l'index persistant se fait dans le paramétrage d'une action. On utilise la clé 'resetIndex' et une valeur 'liste[int]' relative au numéro de l'action dans laquelle le marqueur a été initialisé.
 
    .. code-block:: YAML
 
@@ -151,7 +151,7 @@ Gestion des index
            - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5} # Je marque l'emplacement de ma première balise liée à la date.
            - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
            - SaveJob:
-           - GoBack: {'nextAction' : 1} # Je reviens au node 1 et repère la balise déjà visitée grâce au marqueur déposé
+           - GoBack: {'nextAction' : 1} # Je reviens à l'action 1 et repère la balise déjà visitée grâce au marqueur déposé
            - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Remise à zéro du marqueur défini dans le noeud 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
 
 Description des actions :
@@ -296,7 +296,7 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
 
       - SODEXO:
          - GoPage: {'url': "https://sodexo-recrute.talent-soft.com/accueil.aspx?LCID=1036"}
-         - FindDate: {'tag' : {'class' : 'ts-offer-card-content offerContent','tag' : {'balise' : 'li', 'index' : 2}}, 'persistentIndex', 'possiblNode' : 5}
+         - FindDate: {'tag' : {'class' : 'ts-offer-card-content offerContent','tag' : {'balise' : 'li', 'index' : 2}}, 'persistentIndex', 'possiblAction' : 5}
          - ClickPage: {'tag' : {'class' : 'ts-offer-card Layer', 'tag' : {'balise' : 'h3'}}, 'persistentIndex'}
          - SaveJob:
          - GoBack: {'nextAction' : 1}
