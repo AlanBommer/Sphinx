@@ -98,11 +98,11 @@ Gestion des tags
         </span>
       </div>
 
-  7. Suite à la recherche d'un tag, il sera parfois nécessaire d'accéder à un élément spécifique de la liste des résultats. Pour cela, il est possible de définir le paramètre 'listIndex : n' avec le numéro de l'indice recherché.
+  7. Suite à la recherche d'un tag, il sera parfois nécessaire d'accéder à un élément spécifique de la liste des résultats. Pour cela, il est possible de définir le paramètre 'mark : n' avec le numéro de l'indice recherché.
 
     .. code-block:: YAML
 
-       - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a', 'listIndex' : 1}}
+       - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a', 'mark' : 1}}
 
   Ici, nous prendrons l'indice numéro 1 de la liste des résultats. Dans l'exemple ci-dessus, le résultat sera donc '05/02/2020' et non 'Publié le'.
 
@@ -117,33 +117,34 @@ Gestion des tags
 Gestion des index
 +++++++++++++++++
 
-  1. Afin de naviguer entre les différentes offres d'emploi, le programme a besoin d'indexs lui permettant de poser des point de repères pour ensuite jalonner son trajet.
-  2. L'index est nommé 'persistantIndex'. Il doit être défini dans le paramétrage de l'action "ClickPage" ou "FindDate" en fonction du point de repère à déposer.
+  1. Afin de naviguer entre les différentes offres d'emploi, le programme a besoin de poser des points de repères pour ensuite jalonner son trajet.
+
+  2. Ces points sont nommés 'persistentIndex'. Ils doivent être définis dans le paramétrage des actions "ClickPage" ou "FindDate" si les noeuds liés en ont besoin.
+
+   .. code-block:: YAML
+
+      - EXEMPLE:
+        - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
+        - ClickPage: {'tag' : {'class': 'primaryButton'}} # Noeud permettant d'accéder aux offres d'emploi
+        - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleNode' : 5} # Je marque l'emplacement de ma première balise liée à la date.
+        - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise liée à mon emploi.
+        - SaveJob:
+        - ...
+
+  3. Ainsi, le programme peut naviguer de noeud en noeud en connaissant les balises déjà visitées.
+
+  4. La réinitialisation de l'index persistant se fait dans le paramétrage d'une action. On utilise la clé 'resetIndex' et une valeur 'liste[int]' relative au numéro du node dans lequel le marqueur a été initialisé.
 
    .. code-block:: YAML
 
       - EXEMPLE:
         - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
         - ClickPage: {'tag' : {'class': 'primaryButton'}} # Action permettant d'accéder aux offres d'emploi
-        - FindDate: {'tag' : {'class' : 'date'}, 'persistantIndex', 'possibleNode' : 5} # Je marque l'emplacement de ma première balise liée à la date.
-        - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistantIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
+        - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleNode' : 5} # Je marque l'emplacement de ma première balise liée à la date.
+        - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
         - SaveJob:
-        - ...:
-
-  3. Ainsi, le programme peut naviguer de noeud en noeud et connaitra les balises déjà visitées.
-
-  4. La réinitialisation de l'index se fait dans le paramétrage d'une action. On utilise la clé 'resetIndex' et une valeur 'liste[int]' relative au numéro du node dans lequel l'index a été initialisé.
-
-   .. code-block:: YAML
-
-      - EXEMPLE:
-        - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
-        - ClickPage: {'tag' : {'class': 'primaryButton'}} # Action permettant d'accéder aux offres d'emploi
-        - FindDate: {'tag' : {'class' : 'date'}, 'persistantIndex', 'possibleNode' : 5} # Je marque l'emplacement de ma première balise liée à la date.
-        - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistantIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
-        - SaveJob:
-        - GoBack: {'nextNode' : 1} # Je reviens au node 1 et repère la balise déjà visitée grâce à l'index déposé
-        - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextNode' : 1} # Remise à zéro de l'index défini dans le noeud 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
+        - GoBack: {'nextNode' : 1} # Je reviens au node 1 et repère la balise déjà visitée grâce au marqueur déposé
+        - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextNode' : 1} # Remise à zéro du marqueur défini dans le noeud 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
 
 Description des actions :
 =========================
@@ -153,120 +154,100 @@ Action GoPage :
 
 .. topic:: Présentation :
 
-   L'action **GoPage** permet d'accéder à la page web des offres.
-	 Il nécessite en entrée un lien internet qui renvoie à la page d'offre d'emplois de l entreprise visée.
+   L'action **GoPage** permet d'accéder à la page web des offres. Il nécessite en entrée un lien internet qui renvoie à la page d'offre d'emplois de l'entreprise visée.
 
    Paramètre :
 
       * 'url' : variable principale de l'action. Valeur : adresse url renvoyant à la page web du site d'offre d'emplois.
 
-.. topic:: Exemple :
+.. code-block:: YAML
 
-   .. code-block:: YAML 
-      
-      GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
+   - EXEMPLE:
+      - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
 
 Action ClickPage
 +++++++++++++++++
 
 .. topic:: Présentation :
 
-	L'action **ClickPage** permet de cliquer sur un lien url spécifique : fonction recherche, accéder à l'offre d'emploi, accéder à la page suivante du site.
-	Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
+   L'action **ClickPage** permet de cliquer sur un lien url spécifique : fonction recherche, accéder à l'offre d'emploi, accéder à la page suivante du site. Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
 
-  Paramètre :
+   Paramètre :
 
-     * 'path' : variable principale de l'action. Valeur : XPATH des balises HTML
+      * 'tag' : variable principale de l'action. Valeur : encapsulage des tags (**cf "Gestion des tags"**)
 
-.. topic:: Exemple :
-   
-   .. code-block:: YAML 
+.. code-block:: YAML
 
-   **Note** : Ici on remarque l'utilisation en cascade des tags permettant de trouver l'adresse html nécessaire à la poursuite du scénario et l'appel au node 5 en cas d échec dans la recherche des tags.
+   - EXEMPLE:
+      - ClickPage: {'tag' : {'class' : labelOffer', 'tag' : {'balise' : 'a'}}
 
 Action SaveJob
 +++++++++++++++
 
 .. topic:: Présentation :
 
-  L'action **SaveJob** permet de sauvegarder la page HTML de l'offre d'emploi.
-	Il ne nécessite pas de paramètre. Le programme est chargé d'effectuer la sauvegarde locale puis le transfert sur la base de donnée.
+   L'action **SaveJob** permet de sauvegarder la page HTML de l'offre d'emploi. Il ne nécessite pas de paramètre. Le programme est chargé d'effectuer la sauvegarde locale puis le transfert sur la base de donnée.
 
-.. topic:: Exemple :
+.. code-block:: YAML
 
-   .. code-block:: YAML 
-
-      SaveJob: {}
+   - EXEMPLE:
+     - SaveJob:
 
 Action Scroll
 ++++++++++++++
 
 .. topic:: Présentation :
 
-	L'action **Scroll** permet de simuler l'action de la souris afin de charger les données dynamiques du site.
-	Il nécessite en entrée un entier int relatif à la distance nécessaire pour afficher les nouvelles informations.
+   L'action **Scroll** permet de simuler l'action de la souris afin de charger les données dynamiques du site. Il nécessite en entrée un entier int relatif à la distance nécessaire pour afficher les nouvelles informations.
 
-  Paramètre :
+   Paramètre :
+      * 'size' : variable principale de l'action. Valeur : taille du scroll nécessaire.
 
-     * 'size' : variable principale de l'action. Valeur : taille du scroll nécessaire.
+.. code-block:: YAML
 
-.. topic:: Exemple :
-
-   .. code-block:: YAML 
-
-      Scroll : {'size' : 10, 'possibleNode' : 5}
+   - EXEMPLE:
+      - Scroll : {'size' : 10, 'possibleNode' : 5}
 
 Action GoBack
 ++++++++++++++
 
 .. topic:: Présentation :
 
-	L'action **GoBack** permet d'effectuer un retour en arrière pour retourner sur la page url précédente.
-	Il nécessite en entrée le renvoi sur l'action à exécuter à l'issue
+   L'action **GoBack** permet d'effectuer un retour en arrière pour retourner sur la page url précédente. Il nécessite en entrée le renvoi sur l'action à exécuter à l'issue
 
-  Paramètre :
+   Paramètre :
 
-     * 'nextNode' : valeur principale de l'action. Valeur : node de l'action à exécuter à l'issue.
+      * 'nextNode' : valeur principale de l'action. Valeur : node de l'action à exécuter à l'issue.
 
-.. topic:: Exemple :
+.. code-block:: YAML
 
-   .. code-block:: YAML 
-      
-      GoBack: {'nextNode' : 2}
+   - EXEMPLE:
+      - GoBack: {'nextNode' : 2}
 
 Action FindDate
 ++++++++++++++++
 
 .. topic:: Présentation :
 
-	L'action **FindDate** permet de repérer la date présente dans la page. En interne, il déterminera si l'offre d'emploi est intéressante ou non (*i.e* si les offres d'emploi ont été publiées après une date pré-déterminée)
-	Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
+   L'action **FindDate** permet de repérer la date présente dans la page. En interne, il déterminera si l'offre d'emploi est intéressante ou non (*i.e* si les offres d'emploi ont été publiées après une date pré-déterminée).
+   Il nécessite en entrée le chemin nécessaire à la navigation dans la page HTML.
 
-  Paramètre :
+   Paramètre :
 
-     * 'path' : variable principale de l'action. Valeur : XPATH des balises HTML
+      * 'tag' : variable principale de l'action. Valeur : encapsulage des tags (**cf "Gestion des tags"**)
 
-.. topic:: Exemple :
-   
-   .. code-block:: YAML 
+.. code-block:: YAML
 
-      FindDate: {'tag' : {'class' : 'ts-offer-card-content offerContent', 'tag' : {'name' : 'li', 'index' : 1 }}}
+   - EXEMPLE:
+      - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'possibleNode' : 5}
 
-   **Note** : Exemple ici de l'utilisation de l'index pour la recherche d'une balise au même niveau que la précédente.
-
-Récapitulatif des actions généralisées :
-========================================
+Exemple d'un scénario générique : 
+=================================
 
 .. code-block:: YAML 
 
-   - NomSite:
-      - GoPage: {'url': "url_site"}   # Je vais sur la page emploi
-         - Scroll: {'size' : int, 'possibleNode' : int} # Je scroll pour charger la page, en cas d'échec je vais au node référencé
-         - FindDate: {'tag' : {'class' : str, 'tag' : {'name' : str, 'index' : int }}} # Je cherche la balise permettant de trouver la date de la première offre, avec deux tags père-fils et 'N' tag frère
-         - ClickPage: {'tag' : {'class' : str, 'tag' : {'target' : str}}, 'possibleNode' : int} # Je clique sur le lien de l'offre d'emploi, en cas de problème je me rend au node référencé
-         - SaveJob: # Je sauvegarde l offre
-         - GoBack: {'nextNode' : int} #Je reviens en arrière et lance le action du node référencé
-         - ClickPage: {'tag' : {'class' : str}, 'nextNode' : int, 'possibleNode' : int} # Je clique sur le lien permettant de continuer la recherche d'emploi et lance l'un des deux actions des nodes référencés*
+   - EXEMPLE:
+      -- A faire:
 
 Recommandations :
 =================
