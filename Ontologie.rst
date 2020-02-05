@@ -248,7 +248,12 @@ Exemple d'un scénario générique :
 .. code-block:: YAML 
 
    - EXEMPLE:
-      -- A faire:
+      - GoPage: {'url': "https://www.exemple.com/fr/emplois"} # Navigation jusqu'à la page des offres d'emplois
+      - FindDate: {'tag' : {'class' : 'date'}, 'persitentIndex', 'possibleNode' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends au noeud 5
+      - ClickPage: {'tag' : {'class' : 'job-offer'},'persitentIndex'} # Navigation vers la page de l'offre d'emploi et dépôt d'un marqueur
+      - SaveJob: # Sauvegarde de la page HTML en local de l'offre d'emploi
+      - GoBack: {'nextNode' : 1} # Navigation vers la page précédente
+      - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextNode' : 1} # Navigation vers la page suivante des offres d'emploi après le noeud 1
 
 Recommandations :
 =================
