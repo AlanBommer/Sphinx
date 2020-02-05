@@ -2,8 +2,8 @@
 Rédaction des scénarios
 ************************
 
-Introduction :
-===============
+Introduction
+==============
 
 Le programme 'SmartCrawl' s'insère au début du processus du 'SmartPath'. Il a pour objectif de parcourir les sites d'entreprises afin de récupérer les offres d'emploi.
 A cet effet, 'SmartCrawl' "visite" les sites listés et "lit" les offres d'emploi, sauvegarde celles qui l'intéresse avant de les transmettre à la base de donnée permettant ensuite à 'SmartPath' de les traiter.
@@ -14,8 +14,8 @@ Un scénario est une liste d'actions rédigées au format YAML.
 
 Les actions sont celles qu'auraient dû faire un utilisateur humain pour parcourir les offres d'emploi. Par conséquent, la visite et l'étude des sites web est nécessaire afin de rédiger les scénarios. Elles ont besoin pour fonctionner de différents paramètres d'entrée.
 
-Préambule technique :
-======================
+Préambule technique
+=====================
 
 Liste des actions
 ++++++++++++++++++
@@ -33,7 +33,7 @@ Gestion des actions
 ++++++++++++++++++++
 
    1. Un scénario comprend plusieurs actions. La première action du scénario est indexée '0'
-   2. Il existe deux clés permettant d'exprimer quelle est la prochaine action à exécuter. La combinaison de plusieurs couples (action, clé) permet d'effectuer des boucles et de parcourir tout le site internet.
+   2. Il existe deux clés permettant d'exprimer quelle est la prochaine action à exécuter. L'utilisation de ces clés permet de créer des boucles et de parcourir tout le site internet.
    3. Les clés suivantes permettent de définir la prochaine action à exécuter : 
 
       * *nextAction* = action qui sera traitée à la fin de l'action actuelle si elle s'éxécute correctement, par défaut 'nextAction' renvoie à l'action de la ligne suivante du scénario
@@ -45,10 +45,10 @@ Gestion des actions
    .. code-block:: YAML
 
       - Exemple:
-            - GoPage: {'url' : 'www.example.com'}
-            - Exemple1: {'possibleAction' : 3}
-            - Exemple2: { ... }
-            - Exemple3: {'nextAction' : 1}
+            - GoPage: {'url' : 'www.example.com'} # Je me rend sur le site example.com
+            - Exemple1: {'possibleAction' : 3} # Si Exemple1 fonctionne, j'exécute Exemple2. Sinon j'exécute Exemple3
+            - Exemple2: { ... } # J'exécute Exemple2 et dans tous les cas, j'exécute ensuite Exemple3
+            - Exemple3: {'nextAction' : 1} # Si Exemple3 fonctionne, j'exécute Exemple1. Sinon, je sors du scénario
 
 .. _Gestiontags:
 
@@ -127,19 +127,19 @@ Gestion des index
 
   1. Afin de naviguer entre les différentes offres d'emploi, le programme a besoin de poser des points de repères pour ensuite jalonner son trajet.
 
-  2. Ces points sont nommés 'persistentIndex'. Ils doivent être définis dans le paramétrage des actions "ClickPage" ou "FindDate" si les noeuds liés en ont besoin.
+  2. Il faut rajouter la clé 'persistentIndex' dans le paramétrage des actions "ClickPage" ou "FindDate" pour créer ces points de repère. Ainsi, le programme peut naviguer d'action en action en connaissant les balises déjà visitées.
 
    .. code-block:: YAML
 
       - EXEMPLE:
            - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
-           - ClickPage: {'tag' : {'class': 'primaryButton'}} # Noeud permettant d'accéder aux offres d'emploi
+           - ClickPage: {'tag' : {'class': 'primaryButton'}} # Action permettant d'accéder aux offres d'emploi
            - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5} # Je marque l'emplacement de ma première balise liée à la date.
            - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise liée à mon emploi.
            - SaveJob:
            - ...
 
-  3. Ainsi, le programme peut naviguer de noeud en noeud en connaissant les balises déjà visitées.
+  3. 
 
   4. La réinitialisation de l'index persistant se fait dans le paramétrage d'une action. On utilise la clé 'resetIndex' et une valeur 'liste[int]' relative au numéro de l'action dans laquelle le marqueur a été initialisé.
 
@@ -152,10 +152,10 @@ Gestion des index
            - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
            - SaveJob:
            - GoBack: {'nextAction' : 1} # Je reviens à l'action 1 et repère la balise déjà visitée grâce au marqueur déposé
-           - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Remise à zéro du marqueur défini dans le noeud 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
+           - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Remise à zéro du marqueur défini dans l'action 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
 
-Description des actions :
-=========================
+Description des actions
+========================
 
 Action GoPage :
 ++++++++++++++++
@@ -248,21 +248,21 @@ Action FindDate
    - EXEMPLE:
       - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'possibleAction' : 5}
 
-Exemple générique d'un scénario  : 
-====================================
+Exemple générique d'un scénario
+================================
 
 .. code-block:: YAML 
 
    - EXEMPLE:
       - GoPage: {'url': "https://www.exemple.com/fr/emplois"} # Navigation jusqu'à la page des offres d'emplois
-      - FindDate: {'tag' : {'class' : 'date'}, 'persitentIndex', 'possibleAction' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends au noeud 5
+      - FindDate: {'tag' : {'class' : 'date'}, 'persitentIndex', 'possibleAction' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends à l'action 5
       - ClickPage: {'tag' : {'class' : 'job-offer'},'persitentIndex'} # Navigation vers la page de l'offre d'emploi et dépôt d'un marqueur
       - SaveJob: # Sauvegarde de la page HTML en local de l'offre d'emploi
       - GoBack: {'nextAction' : 1} # Navigation vers la page précédente
-      - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Navigation vers la page suivante des offres d'emploi après le noeud 1
+      - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Navigation vers la page suivante des offres d'emploi après l'action 1
 
-Recommandations :
-==================
+Recommandations
+=================
 
    .. warning::
 
@@ -285,6 +285,8 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
          - GoBack: {'nextAction' : 1}
          - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'a'}, 'resetIndex' : [1,2]}, 'nextAction' : 1}
 
+   .. code-block:: YAML
+
       - BNP:
          - GoPage: {'url': "https://group.bnpparibas/emploi-carriere/toutes-offres-emploi/france"}
          - Scroll: {'size' : 10, 'possibleAction' : 5}
@@ -294,6 +296,8 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
          - ClickPage: {'tag' : {'class' : 'progress-buton elastic show-more'}, 'nextAction' : 1, 'possibleAction' : 6}
          - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'a'}}, 'resetIndex' : [2], 'nextAction' : 1}
 
+   .. code-block:: YAML
+
       - SODEXO:
          - GoPage: {'url': "https://sodexo-recrute.talent-soft.com/accueil.aspx?LCID=1036"}
          - FindDate: {'tag' : {'class' : 'ts-offer-card-content offerContent','tag' : {'balise' : 'li', 'index' : 2}}, 'persistentIndex', 'possiblAction' : 5}
@@ -301,6 +305,8 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
          - SaveJob:
          - GoBack: {'nextAction' : 1}
          - ClickPage: {} # Pas assez d'offre lors de la rédaction pour avoir une page suivante
+
+   .. code-block:: YAML
 
       - TOTAL:
          - GoPage: {'url' : 'https://krb-sjobs.brassring.com/tgnewui/search/home/home?partnerid=30080&siteid=6559#Pays=France&keyWordSearch='}
@@ -311,11 +317,15 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
          - GoBack: {'nextAction' : 2}
          - ClickPage: {'tag' : {'id' : 'showMoreJobs'}, 'nextAction' : 2}
 
+   .. code-block:: YAML
+
       - CANAL:
          - GoPage: {'url' : 'https://jobs.canalplus.com/nos-offres/'}
          - ClickPage: {'tag' : {'balise' : 'ul', 'tag' : {'balise' : 'li', 'tag' : {'balise' : 'a'}}}, 'persistentIndex'}
          - SaveJob:
          - GoBack: {'nextAction' : 1}
+
+   .. code-block:: YAML
 
       - DASSAULT:
          - GoPage: {'url' : 'https://careers.3ds.com/fr/jobs?woc=%7B%22pays%22%3A%5B%22pays%2Ffrance%22%5D%7D'}
@@ -323,6 +333,8 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
          - SaveJob:
          - GoBack: {'nextAction' : 1}
          - ClickPage: {'tag' : {'class' : 'ds-pagination__next', 'tag' : {'balise' : 'a'}}, 'resetIndex' : [1], 'nextAction' : 1}
+
+   .. code-block:: YAML
 
       - ACCOR:
          - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
