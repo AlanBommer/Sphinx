@@ -2,6 +2,7 @@
 Rédaction des scénarios
 ************************
 
+
 Introduction
 ==============
 
@@ -20,13 +21,15 @@ Préambule technique
 Liste des actions
 ++++++++++++++++++
 
-   Les actions sont au nombre de 6 et elles permettent d'avoir un impact déterminé sur la page web.
+   Les actions sont au nombre de 8 et elles permettent d'avoir un impact déterminé sur la page web.
 
    #. GoPage, pour se rendre sur une page donnée
    #. ClickPage, pour clicker sur un lien donné
+   #. GoNewTab, pour ouvrir dans un nouvel onglet un lien donné
    #. SaveJob, pour enregistrer la page HTML de l'emploi
    #. Scroll, pour faire dérouler la page actuelle
    #. GoBack, pour revenir en arrière
+   #. CloseTab, pour fermer un onglet précédemment ouvert
    #. FindDate, pour chercher la date des offres d'emploi dans la page actuelle
 
 Gestion des actions
@@ -56,103 +59,59 @@ Gestion des tags
 +++++++++++++++++
 
   1. Le programme s'appuie sur les élements du dom HTML pour scrapper les données. Nous les appellerons des tags.
-  2. Les tags sont définis par un couple (clé, valeur).
-  3. Les (clés,valeurs) possibles pour un tag sont les suivantes :
-
-      * Pour une balise : clé = 'balise' & valeur = 'a', 'img', 'span', 'div', 'li',...
-
-             .. code-block:: YAML
-
-               - Exemple: {'balise' : 'a'}
-
-      * Pour un attribut : clé = 'href', 'class', 'id',... & valeur = 'string'
-
-             .. code-block:: YAML
-
-               - Exemple: {'class' : 'labelOffer'}
-
-      * Pour un texte brut : clé = 'texte' & valeur = 'string'
-
-             .. code-block:: YAML
-
-               - Exemple: {'texte' : '02/05/2020'}
-
-  4. Chaque fois que nous écrivons un couple (clé,valeur) nous devons le spécifier dans un dictionnaire dont la clé est 'tag'.
-
-    .. code-block:: YAML
-
-          - Exemple: {'tag' : {'class' : 'labelOffer'}}
-
-  5. Afin d'arriver à la donnée spécifiée, il sera parfois nécessaire de parcourir différents tags inclus les uns dans les autres. Pour cela, il est possible d'effectuer une imbrication de tags.
+  2. Les tags sont définis selon le modèle 'XPATH'. Vous trouverez un tutoriel complet sur la rédaction des xpath au lien suivant : 'https://www.guru99.com/xpath-selenium.html'
+  3. Vous trouverez ci-dessous plusieurs types de xpath utilisés :
 
      .. code-block:: YAML
 
-          - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a'}}
+      - Exemple:
+        - Exemple: {'xpath' : '//div[@class="topcard"]//div//p//span'}
+        - Exemple: {'xpath' : '//div[@class="container"]//div//div//div/child::div[4]/child::span[2]//strong'}
+        - Exemple: {'xpath' : '//input[@id="ctl00_ContentPlaceHolder1_BtnApply"]'}
+        - Exemple: {'xpath' : '//tr[contains(@class,"Greycell")]//td//a'}
+        - Exemple: {'xpath' : '//ul[@class="list")]/li/a'}
+        - Exemple: {'xpath' : '//div[@id="job_results_list_hldr"]//div[starts-with(@id,"job_list")]//div[@class="jlr_title"]//p//a'}
 
-  Ici, le programme va rechercher un tag correspondant à un attribut 'class' dont la valeur est 'labelOffer'. Une fois déterminé, il va rechercher à l'intérieur de ce bloc html le premier tag correspondant à la balise 'a'. Pour explication, lors d'une recherche d'un tag, le programme récupèra une liste de tous les résultats correspondants à ce tag.
-
-  6. Attention, si rien n'est spécifié, seul le premier résultat de la recherche sera pris en compte.
-
-    .. code-block:: YAML
-
-      - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a'}}
-
-    .. code-block:: HTML
-
-      <div>
-           <span class = 'labelOffer' href = 'url'>
-             <a> Publié le </a> <!-- Résultat de la recherche ci-dessus -->
-             <a> 05/02/2020 </a>
-           </span>
-      </div>
-
-  7. Suite à la recherche d'un tag, il sera parfois nécessaire d'accéder à un élément spécifique de la liste des résultats. Pour cela, il est possible de définir le paramètre 'mark : n' avec le numéro de l'indice recherché.
-
-    .. code-block:: YAML
-
-          - Exemple: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a', 'mark' : 1}}
-
-  Ici, nous prendrons l'indice numéro 1 de la liste des résultats. Dans l'exemple ci-dessus, le résultat sera donc '05/02/2020' et non 'Publié le'.
-
-  8. La recherche des tags ne peut s'effectuer qu'au travers des actions "FindDate" et "ClickPage". Pour "FindDate", le programme cherchera une valeur textuelle au format d'une date. Pour "ClickPage", le programme cherchera une url.
+  8. La recherche des tags ne peut s'effectuer qu'au travers des actions "FindDate", "ClickPage", "GoNewTab", "CloseTab". Pour "FindDate", le programme cherchera une valeur textuelle au format d'une date. Pour les autres actions, le programme cherchera une url.
 
   .. warning::
 
-     1. Via cette gestion des tags, il est possible d'arriver rapidement à la donnée voulue. Pour cela, il est conseillé de déterminer la valeur d'un tag unique. Indice : quand le code HTML est bien écrit, la valeur d'un attribut 'id' est unique.
-     2. Il est préférable de prendre des tags dans la page HTML qui ne sont pas susceptibles d'être modifiés.
-
+     1. Via cette gestion des tags, il est possible d'arriver rapidement à la donnée voulue. Pour cela, il est conseillé de déterminer la valeur d'un xpath unique. Il est conseillé de tester son xpath via l'inspecteur de page HTML du navigateur Web.
+     2. Il est préférable définir les valeurs des attributs dans la page HTML qui ne sont pas susceptibles d'être modifiés.
 
 Gestion des index
 +++++++++++++++++
 
   1. Afin de naviguer entre les différentes offres d'emploi, le programme a besoin de poser des points de repères pour ensuite jalonner son trajet.
 
-  2. Il faut rajouter la clé 'persistentIndex' dans le paramétrage des actions "ClickPage" ou "FindDate" pour créer ces points de repère. Ainsi, le programme peut naviguer d'action en action en connaissant les balises déjà visitées.
+  2. Il faut rajouter la clé 'persistentIndex' dans le paramétrage des actions "Scroll", "GoNewTab", ClickPage" ou "FindDate" pour créer ces points de repère. Ainsi, le programme peut naviguer d'action en action en connaissant les balises déjà visitées.
+
+  3. En rajoutant la clé 'persistentIndex' dans les actions, le programme pourra itérer sur les offres d’emploi d’une page. L'itération être réalisée pour les jobs, les dates et le scroll. Le programme s'adaptera automatiquement. Si vous précisez pas la clé, il ne prendra en compte que le 1er élément. 
 
    .. code-block:: YAML
 
       - EXEMPLE:
            - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
-           - ClickPage: {'tag' : {'class': 'primaryButton'}} # Action permettant d'accéder aux offres d'emploi
-           - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5} # Je marque l'emplacement de ma première balise liée à la date.
-           - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise liée à mon emploi.
+           - ClickPage: {'xpath' : 'XPATH'} # Action permettant d'accéder aux offres d'emploi
+           - FindDate: {'xpath' : 'XPATH', 'persistentIndex', 'possibleAction' : 5} # J'indexe l'action liée à la recherche de date
+           - ClickPage: {'xpath' : 'XPATH', 'persistentIndex'} # J'indexe l'action liée à mon emploi.
            - SaveJob:
            - ...
 
-  3. 
+  4. Si l'on est déjà sur la page du job et que l'on recherche seulement la date de publication, la clé 'persistentIndex' n'est pas utile.
 
-  4. La réinitialisation de l'index persistant se fait dans le paramétrage d'une action. On utilise la clé 'resetIndex' et une valeur 'liste[int]' relative au numéro de l'action dans laquelle le marqueur a été initialisé.
+  5. La réinitialisation de l'index persistant se fait dans le paramétrage d'une action. On utilise la clé 'resetIndex' et une valeur 'liste[int]' relative au numéro de l'action dans laquelle le marqueur a été initialisé.
 
    .. code-block:: YAML
 
       - EXEMPLE:
            - GoPage: {'url': "https://www.exemplesiteemplois.com/fr"} 
-           - ClickPage: {'tag' : {'class': 'primaryButton'}} # Action permettant d'accéder aux offres d'emploi
-           - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5} # Je marque l'emplacement de ma première balise liée à la date.
-           - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'} # Je marque l'emplacement de ma première balise lié à mon emploi.
-           - SaveJob:
-           - GoBack: {'nextAction' : 1} # Je reviens à l'action 1 et repère la balise déjà visitée grâce au marqueur déposé
-           - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Remise à zéro du marqueur défini dans l'action 2 : "FindDate" lorsque le scénario se rendra sur la page suivante du site.
+           - ClickPage: {'xpath' : 'XPATH'} # Action permettant d'accéder aux offres d'emploi
+           - GoNewTab: {'xpath' : 'XPATH', 'persistentIndex'} # J'indexe l'action liée à mon emploi.
+           - FindDate: {'xpath' : 'XPATH'} # Etant déjà sur la page d'emploi, il n'est pas utile d'indexé l'action.
+           - SaveJob: {}
+           - CloseTab: {'nextAction' : 1} # Je reviens à l'action 1 et repère la balise déjà visitée grâce au marqueur déposé
+           - ClickPage: {'xpath' : 'XPATH', 'resetIndex' : [2], 'nextAction' : 1} # Remise à zéro du marqueur défini dans l'action 3 : "GoNewTab" lorsque le scénario se rendra sur la page suivante du site.
 
 Description des actions
 ========================
@@ -182,39 +141,12 @@ Action ClickPage
 
    Paramètre :
 
-      * 'tag' : variable principale de l'action. Valeur : encapsulage des tags (voir :ref:`Gestiontags`)
+      * 'xpath' : variable principale de l'action. Valeur : chemin xpath de l'adresse ciblée (voir :ref:`Gestiontags`)
 
 .. code-block:: YAML
 
    - EXEMPLE:
-      - ClickPage: {'tag' : {'class' : labelOffer', 'tag' : {'balise' : 'a'}, 'persistentIndex'}
-
-Action SaveJob
-+++++++++++++++
-
-.. topic:: Présentation :
-
-   L'action **SaveJob** permet de sauvegarder la page HTML de l'offre d'emploi. Il ne nécessite pas de paramètre. Le programme est chargé d'effectuer la sauvegarde locale puis le transfert sur la base de donnée.
-
-.. code-block:: YAML
-
-   - EXEMPLE:
-     - SaveJob:
-
-Action Scroll
-++++++++++++++
-
-.. topic:: Présentation :
-
-   L'action **Scroll** permet de simuler l'action de la souris afin de charger les données dynamiques du site. Il nécessite en entrée un type **int** relatif à la distance nécessaire pour afficher les nouvelles informations.
-
-   Paramètre :
-      * 'size' : variable principale de l'action. Valeur : taille du scroll nécessaire, type **int**.
-
-.. code-block:: YAML
-
-   - EXEMPLE:
-      - Scroll : {'size' : 10, 'possibleAction' : 5}
+      - ClickPage: {'xpath' : '//ul[@class="list")]/li/a', 'persistentIndex'}
 
 Action GoBack
 ++++++++++++++
@@ -232,6 +164,70 @@ Action GoBack
    - EXEMPLE:
       - GoBack: {'nextAction' : 2}
 
+Action GoNewTab
+++++++++++++++++
+
+.. topic:: Présentation :
+
+   L'action **GoNewTab** possède les même caractéristiques que l'action **ClickPage**. La différence vient de l'ouverture d'un onglet pour continuer la navigation. Il est conseillé d'utiliser cette action pour ouvrir une offre d'emploi, cela permet de passer outre certains blocages de sites. Cette action devra être couplée à l'action **CloseTab** en aval dans le scénario.
+
+   Paramètre :
+
+      * 'xpath' : variable principale de l'action. Valeur : chemin xpath de l'adresse ciblée (voir :ref:`Gestiontags`)
+
+   .. code-block:: YAML
+
+   - EXEMPLE:
+      - GoNewTab: {'xpath' : '//ul[@class="list")]/li/a', 'persistentIndex'}
+
+
+Action CloseTab
+++++++++++++++++
+
+.. topic:: Présentation :
+
+   L'action **CloseTab** possède les même caractéristiques que l'action **CloseTab**. La différence permet la fermeture d'un onglet préalablement ouvert via l'action ****GoNewTab**. Cette action devra être couplée à l'action **GoNewTab** en amont dans le scénario. Ne pas oublier le paramètre 'nextAction', en effet dans le cas contraire, la prochaine action à être appellée le sera dans un onglet fermé et ne pourra pas s'exécuter.
+
+   Paramètre :
+
+      * 'nextAction' : variable principale de l'action. Valeur : index de l'action à exécuter à l'issue, type *int*.
+
+.. code-block:: YAML
+
+   - EXEMPLE:
+      - CloseTab: {'nextAction' : 2}
+
+Action SaveJob
++++++++++++++++
+
+.. topic:: Présentation :
+
+   L'action **SaveJob** permet de sauvegarder la page HTML de l'offre d'emploi. Il ne nécessite pas de paramètre. Le programme est chargé d'effectuer la sauvegarde locale puis le transfert sur la base de donnée. Il peut prendre en entrée le paramètre 'maxJobs' de type **int**. Ce paramètre permet de spécifier le nombre d'emplois télécharger. Si le paramètre n'est pas renseigné, la valeur par défaut est fixée à 50 (même en présence d'une action **FindDate**). Si la valeur est fixée à "-1", aucune limitation ne sera levée pour le téléchargement.
+
+   Paramètre :
+
+      * 'maxJobs' : variable principale de l'action. Valeur : nombre de jobs à enregistrer, type *int*.
+
+.. code-block:: YAML
+
+   - EXEMPLE:
+     - SaveJob: {'maxJobs' = -1}
+
+Action Scroll
+++++++++++++++
+
+.. topic:: Présentation :
+
+   L'action **Scroll** permet de simuler l'action de la souris afin de charger les données dynamiques du site. Il nécessite en entrée un type **int** relatif à la distance nécessaire pour afficher les nouvelles informations.
+
+   Paramètre :
+      * 'size' : variable principale de l'action. Valeur : taille du scroll nécessaire, type **int**.
+
+.. code-block:: YAML
+
+   - EXEMPLE:
+      - Scroll : {'size' : 10, 'possibleAction' : 5}
+
 Action FindDate
 ++++++++++++++++
 
@@ -241,28 +237,28 @@ Action FindDate
 
    Paramètre :
 
-      * 'tag' : variable principale de l'action. Valeur : encapsulage des tags (**cf "Gestion des tags"**)
+      * 'xpath' : variable principale de l'action. Valeur : chemin xpath de la date ciblée (voir :ref:`Gestiontags`)
 
 .. code-block:: YAML
 
    - EXEMPLE:
-      - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'possibleAction' : 5}
+      - FindDate: {'xpath' : '//dd[@class="job_post_date"]//span[@class="field_value"]', 'possibleAction' : 5}
 
 Exemple générique d'un scénario
 ================================
 
-.. code-block:: YAML 
+.. code-block:: YAML
 
    - EXEMPLE:
       - GoPage: {'url': "https://www.exemple.com/fr/emplois"} # Navigation jusqu'à la page des offres d'emplois
-      - FindDate: {'tag' : {'class' : 'date'}, 'persitentIndex', 'possibleAction' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends à l'action 5
-      - ClickPage: {'tag' : {'class' : 'job-offer'},'persitentIndex'} # Navigation vers la page de l'offre d'emploi et dépôt d'un marqueur
+      - FindDate: {'xpath' : '//div[@id="offres"]//span[@class="date_offre"]', 'persitentIndex', 'possibleAction' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends à l'action 5
+      - GoNewTab: {'xpath' : '//a[@class="titre_offre"]','persitentIndex'} # Navigation vers la page de l'offre d'emploi et dépôt d'un marqueur
       - SaveJob: # Sauvegarde de la page HTML en local de l'offre d'emploi
-      - GoBack: {'nextAction' : 1} # Navigation vers la page précédente
-      - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'page'}}, 'resetIndex' : [1,2], 'nextAction' : 1} # Navigation vers la page suivante des offres d'emploi après l'action 1
+      - CloseTab: {'nextAction' : 1} # Navigation vers la page précédente
+      - ClickPage: {'xpath' : '//div[@button="page_suivante"], 'resetIndex' : [1,2], 'nextAction' : 1} # Navigation vers la page suivante des offres d'emploi après l'action 1
 
 Recommandations
-=================
+================
 
    .. warning::
 
@@ -277,70 +273,71 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
 
    .. code-block:: YAML
 
-      - SAFRAN:
-         - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
-         - FindDate: {'tag' : {'class' : 'date'}, 'persistentIndex', 'possibleAction' : 5}
-         - ClickPage: {'tag' : {'class' : 'offer-card'}, 'persistentIndex'}
-         - SaveJob:
-         - GoBack: {'nextAction' : 1}
-         - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'a'}, 'resetIndex' : [1,2]}, 'nextAction' : 1}
+     - SAFRAN:
+        - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
+        - FindDate: {'xpath' : "//span[@class='date']", 'persistentIndex', 'possibleAction' : 6}
+        - Scroll: {'size': 100, 'persistentIndex'}
+        - GoNewTab: {'xpath' : "//a[@class='offer-card']", persistentIndex}
+        - SaveJob: {}
+        - CloseTab: {'nextAction' : 1}
+        - ClickPage: {'xpath' : "//li[@class='next']//a", 'nextAction' : 1, 'resetIndex': [1,3]}
 
    .. code-block:: YAML
 
       - BNP:
-         - GoPage: {'url': "https://group.bnpparibas/emploi-carriere/toutes-offres-emploi/france"}
-         - Scroll: {'size' : 10, 'possibleAction' : 5}
-         - ClickPage: {'tag' : {'balise' : 'ul', 'tag' : {'balise' : li'}, 'persistentIndex'}}
-         - SaveJob:
-         - GoBack: {'nextAction' : 1}
-         - ClickPage: {'tag' : {'class' : 'progress-buton elastic show-more'}, 'nextAction' : 1, 'possibleAction' : 6}
-         - ClickPage: {'tag' : {'class' : 'next', 'tag' : {'balise' : 'a'}}, 'resetIndex' : [2], 'nextAction' : 1}
+       - GoPage: {'url': "https://group.bnpparibas/emploi-carriere/toutes-offres-emploi/france"}
+       - Scroll: {'size' : 105, 'persistentIndex', 'possibleAction' : 5}
+       - GoNewTab: {'xpath' : '//ul[@class="results rh-results"]//li//a', 'persistentIndex', 'possibleAction': 5}
+       - SaveJob: {}
+       - CloseTab: {'nextAction' : 1}
+       - ClickPage: {'xpath' : '//div[@class="progress-button elastic show-more"]//button', 'nextAction' : 1, 'possibleAction' : 6}
+       - ClickPage: {'xpath' : '//li[@class="next"]//a', 'resetIndex' : [1,2], 'nextAction' : 1}
+
 
    .. code-block:: YAML
 
       - SODEXO:
-         - GoPage: {'url': "https://sodexo-recrute.talent-soft.com/accueil.aspx?LCID=1036"}
-         - FindDate: {'tag' : {'class' : 'ts-offer-card-content offerContent','tag' : {'balise' : 'li', 'index' : 2}}, 'persistentIndex', 'possiblAction' : 5}
-         - ClickPage: {'tag' : {'class' : 'ts-offer-card Layer', 'tag' : {'balise' : 'h3'}}, 'persistentIndex'}
-         - SaveJob:
-         - GoBack: {'nextAction' : 1}
-         - ClickPage: {} # Pas assez d'offre lors de la rédaction pour avoir une page suivante
+       - GoPage: {'url': "https://sodexo-recrute.talent-soft.com/accueil.aspx?LCID=1036"}
+       - FindDate: {'xpath' : '//ul[@class="ts-offer-card-content__list "]/child::li[2]', 'persistentIndex', 'nextAction' : -1}
+       - GoNewTab: {'xpath' : '//a[@class="ts-offer-card__title-link  "]', 'persistentIndex'}
+       - SaveJob: {}
+       - CloseTab: {'nextAction' : 1}
 
    .. code-block:: YAML
 
       - TOTAL:
-         - GoPage: {'url' : 'https://krb-sjobs.brassring.com/tgnewui/search/home/home?partnerid=30080&siteid=6559#Pays=France&keyWordSearch='}
-         - ClickPage: {'tag' : {'id' : 'searchControls_BUTTON_2'}}
-         - FindDate: {'tag' : {'class' : 'jobProperty position1'}, 'persistentIndex', 'possibleAction' : 6}
-         - ClickPage: {'tag' : {'class' : 'jobProperty jobtitle'}, 'persistentIndex'}
-         - SaveJob:           
-         - GoBack: {'nextAction' : 2}
-         - ClickPage: {'tag' : {'id' : 'showMoreJobs'}, 'nextAction' : 2}
+       - GoPage: {'url' : 'https://krb-sjobs.brassring.com/tgnewui/search/home/home?partnerid=30080&siteid=6559#Pays=France&keyWordSearch='}
+       - ClickPage: {'xpath' : "//button[@id='searchControls_BUTTON_2']"}
+       - FindDate: {'xpath' : "//p[@class='jobProperty position1']", 'persistentIndex', 'possibleAction' : 6}
+       - GoNewTab: {'xpath' : "//a[@class='jobProperty jobtitle']", 'persistentIndex'}
+       - SaveJob: {}
+       - CloseTab: {'nextAction' : 2}
+       - ClickPage: {'xpath' : "//a[@id='showMoreJobs']", 'nextAction' : 2, 'resetIndex' : [2,3]}
 
    .. code-block:: YAML
 
       - CANAL:
-         - GoPage: {'url' : 'https://jobs.canalplus.com/nos-offres/'}
-         - ClickPage: {'tag' : {'balise' : 'ul', 'tag' : {'balise' : 'li', 'tag' : {'balise' : 'a'}}}, 'persistentIndex'}
-         - SaveJob:
-         - GoBack: {'nextAction' : 1}
+       - GoPage: {'url' : 'https://jobs.canalplus.com/nos-offres/'}
+       - Scroll: {'size' : 100, 'persistentIndex'}
+       - GoNewTab: {'xpath' : '//div[@class="JobOffersList_JobOffersList_3A33F"]//li[@class="List_boxed__2cbY8 List_borders_default__2dgLN"]//a', 'persistentIndex'}
+       - SaveJob: {}
+       - CloseTab: {'nextAction' : 1}
 
    .. code-block:: YAML
 
       - DASSAULT:
-         - GoPage: {'url' : 'https://careers.3ds.com/fr/jobs?woc=%7B%22pays%22%3A%5B%22pays%2Ffrance%22%5D%7D'}
-         - ClickPage: {'tag' : {'class' : 'ds-card ds-card--lines ds-card--image'}, 'persistentIndex', 'possibleAction' : 4}
-         - SaveJob:
-         - GoBack: {'nextAction' : 1}
-         - ClickPage: {'tag' : {'class' : 'ds-pagination__next', 'tag' : {'balise' : 'a'}}, 'resetIndex' : [1], 'nextAction' : 1}
+       - GoPage: {'url' : 'https://careers.3ds.com/fr/jobs?woc=%7B%22pays%22%3A%5B%22pays%2Ffrance%22%5D%7D'}
+       - GoNewTab: {'xpath' : '//article[@class="ds-card ds-card--lines ds-card--image "]/child::a', 'persistentIndex', 'possibleAction' : 4}
+       - SaveJob: {}
+       - CloseTab: {'nextAction' : 1}
+       - ClickPage: {'xpath' : '//li[@class="ds-pagination__next"]//a', 'resetIndex' : [1], 'nextAction' : 1}
 
    .. code-block:: YAML
 
       - ACCOR:
-         - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
-         - FindDate: {'tag' : {'class' : 'date', 'tag' : {'balise' : 'span'}}, 'persistentIndex', 'possibleAction' : 5}
-         - ClickPage: {'tag' : {'class' : 'labelOffer', 'tag' : {'balise' : 'a'}}, 'persistentIndex'}
-         - SaveJob:
-         - GoBack: {'nextAction' : 1}
-         - CLikPage: {'tag' : {'class' : 'nextPage', {'class' : 'on', 'tag' : {'balise' : 'a'}}}, 'resetIndex' : [1,2], 'nextAction' : 1}
-
+       - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
+       - FindDate: {'xpath' : '//li[@class="date"]//a/following-sibling::span', 'persistentIndex', 'possibleAction' : 5}
+       - GoNewTab: {'xpath' : '//li[@class="labelOffer"]//a[1]', 'persistentIndex'}
+       - SaveJob: {}
+       - CloseTab: {'nextAction' : 1}
+       - ClickPage: {'xpath' : '//ul[@class="nextPage"]//a','resetIndex' : [1,2], 'nextAction' : 1}
