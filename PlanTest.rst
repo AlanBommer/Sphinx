@@ -34,7 +34,7 @@ Test de Non-Régression :
 
    **Résultat attendu** : Plusieurs offres d'emploi ont été téléchargées pour chaque site.
 
-Test robustesse :
+Test de robustesse :
 ~~~~~~~~~~~~~~~~~~
 
    **Objectifs** : Vérifier que le programme réagit comme attendu aux erreurs de rédaction dans les scénarios
@@ -48,7 +48,7 @@ Test robustesse :
 
    **Résultat attendu** : présence de toutes les erreurs attendues et aucune erreur non-attendue
 
-Test endurance :
+Test d'endurance :
 ~~~~~~~~~~~~~~~~~
 
     **Objectifs** : Confirmer la capacité du programme à s'adapter aux différents sites visés.
@@ -59,7 +59,7 @@ Test endurance :
 
     **Résultat attendu** :
 
-Test performance :
+Test de performance :
 ~~~~~~~~~~~~~~~~~~~
 
 	**Objectifs** : Estimer le temps mis par le programme pour parcourir l'ensemble des scénarios retenus du CAC40.
