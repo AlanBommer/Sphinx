@@ -17,13 +17,13 @@ Scénarios du CAC40
 
 .. code-block:: YAML
 
-    - ACCOR:
-       - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
-       - FindDate: {'xpath' : '//li[@class="date"]//a/following-sibling::span', 'persistentIndex', 'possibleAction' : 5}
-       - GoNewTab: {'xpath' : '//li[@class="labelOffer"]//a[1]', 'persistentIndex'}
-       - SaveJob: {}
-       - CloseTab: {'nextAction' : 1}
-       - ClickPage: {'xpath' : '//ul[@class="nextPage"]//a','resetIndex' : [1,2], 'nextAction' : 1}
+	- ACCOR:
+	   - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
+	   - FindDate: {'xpath' : '//li[@class="date"]//a/following-sibling::span', 'persistentIndex', 'possibleAction' : 5}
+	   - GoNewTab: {'xpath' : '//li[@class="labelOffer"]//a[1]', 'persistentIndex'}
+	   - SaveJob: {}
+	   - CloseTab: {'nextAction' : 1}
+	   - ClickPage: {'xpath' : '//ul[@class="nextPage"]//a','resetIndex' : [1,2], 'nextAction' : 1}
 
 	- AIRBUS:
 	   - GoPage: {'url': "https://www.airbus.com/careers/search-and-apply/search-for-vacancies.html?filters=filter_2_1072&textsearch=&language=fr"}
