@@ -15,5 +15,5 @@ Documentation du projet industriel ECP : SmartCrawl
    Scenario
    PlanTest
 
-.. image:: _static/LA.png 
+.. image:: IMG/LA.png 
    :align: center
