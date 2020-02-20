@@ -18,8 +18,8 @@ Les actions sont celles qu'auraient dû faire un utilisateur humain pour parcour
 Préambule technique
 =====================
 
-Liste des actions
-++++++++++++++++++
+Liste des actions :
+~~~~~~~~~~~~~~~~~~~~
 
    Les actions sont au nombre de 8 et elles permettent d'avoir un impact déterminé sur la page web.
 
@@ -32,8 +32,8 @@ Liste des actions
    #. CloseTab, pour fermer un onglet précédemment ouvert
    #. FindDate, pour chercher la date des offres d'emploi dans la page actuelle
 
-Gestion des actions
-++++++++++++++++++++
+Gestion des actions :
+~~~~~~~~~~~~~~~~~~~~~~
 
    1. Un scénario comprend plusieurs actions. La première action du scénario est indexée '0'
    2. Il existe deux clés permettant d'exprimer quelle est la prochaine action à exécuter. L'utilisation de ces clés permet de créer des boucles et de parcourir tout le site internet.
@@ -55,8 +55,8 @@ Gestion des actions
 
 .. _Gestiontags:
 
-Gestion des tags
-+++++++++++++++++
+Gestion des tags :
+~~~~~~~~~~~~~~~~~~~
 
   1. Le programme s'appuie sur les élements du dom HTML pour scrapper les données. Nous les appellerons des tags.
   2. Les tags sont définis selon le modèle 'XPATH'. Vous trouverez un tutoriel complet sur la rédaction des xpath au lien suivant : 'https://www.guru99.com/xpath-selenium.html'
@@ -74,13 +74,11 @@ Gestion des tags
 
   8. La recherche des tags ne peut s'effectuer qu'au travers des actions "FindDate", "ClickPage", "GoNewTab", "CloseTab". Pour "FindDate", le programme cherchera une valeur textuelle au format d'une date. Pour les autres actions, le programme cherchera une url.
 
-  .. warning::
-
-     1. Via cette gestion des tags, il est possible d'arriver rapidement à la donnée voulue. Pour cela, il est conseillé de déterminer la valeur d'un xpath unique. Il est conseillé de tester son xpath via l'inspecteur de page HTML du navigateur Web.
+.. note:: 1. Via cette gestion des tags, il est possible d'arriver rapidement à la donnée voulue. Pour cela, il est conseillé de déterminer la valeur d'un xpath unique. Il est conseillé de tester son xpath via l'inspecteur de page HTML du navigateur Web.
      2. Il est préférable définir les valeurs des attributs dans la page HTML qui ne sont pas susceptibles d'être modifiés.
 
-Gestion des index
-+++++++++++++++++
+Gestion des index :
+~~~~~~~~~~~~~~~~~~~
 
   1. Afin de naviguer entre les différentes offres d'emploi, le programme a besoin de poser des points de repères pour ensuite jalonner son trajet.
 
@@ -117,7 +115,7 @@ Description des actions
 ========================
 
 Action GoPage :
-++++++++++++++++
+~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
@@ -132,8 +130,8 @@ Action GoPage :
    - EXEMPLE:
       - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
 
-Action ClickPage
-+++++++++++++++++
+Action ClickPage :
+~~~~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
@@ -148,8 +146,8 @@ Action ClickPage
    - EXEMPLE:
       - ClickPage: {'xpath' : '//ul[@class="list")]/li/a', 'persistentIndex'}
 
-Action GoBack
-++++++++++++++
+Action GoBack :
+~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
@@ -164,57 +162,72 @@ Action GoBack
    - EXEMPLE:
       - GoBack: {'nextAction' : 2}
 
-Action GoNewTab
-++++++++++++++++
+Action GoNewTab :
+~~~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
-   L'action **GoNewTab** possède les même caractéristiques que l'action **ClickPage**. La différence vient de l'ouverture d'un onglet pour continuer la navigation. Il est conseillé d'utiliser cette action pour ouvrir une offre d'emploi, cela permet de passer outre certains blocages de sites. Cette action devra être couplée à l'action **CloseTab** en aval dans le scénario.
+   L'action **GoNewTab** possède les même caractéristiques que l'action **ClickPage**. La différence vient de l'ouverture d'un onglet pour continuer la navigation.
 
    Paramètre :
 
       * 'xpath' : variable principale de l'action. Valeur : chemin xpath de l'adresse ciblée (voir :ref:`Gestiontags`)
 
-   .. code-block:: YAML
+.. note:: Il est conseillé d'utiliser cette action pour ouvrir une offre d'emploi, cela permet de passer outre certains blocages de sites. Cette action devra être couplée à l'action **CloseTab** en aval dans le scénario.
+
+
+
+.. code-block:: YAML
 
    - EXEMPLE:
       - GoNewTab: {'xpath' : '//ul[@class="list")]/li/a', 'persistentIndex'}
 
 
-Action CloseTab
-++++++++++++++++
+Action CloseTab :
+~~~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
-   L'action **CloseTab** possède les même caractéristiques que l'action **CloseTab**. La différence permet la fermeture d'un onglet préalablement ouvert via l'action ****GoNewTab**. Cette action devra être couplée à l'action **GoNewTab** en amont dans le scénario. Ne pas oublier le paramètre 'nextAction', en effet dans le cas contraire, la prochaine action à être appellée le sera dans un onglet fermé et ne pourra pas s'exécuter.
+   L'action **CloseTab** possède les même caractéristiques que l'action **CloseTab**. La différence permet la fermeture d'un onglet préalablement ouvert via l'action ****GoNewTab**.
 
    Paramètre :
 
       * 'nextAction' : variable principale de l'action. Valeur : index de l'action à exécuter à l'issue, type *int*.
+
+.. note:: Cette action devra être couplée à l'action **GoNewTab** en amont dans le scénario. Ne pas oublier le paramètre 'nextAction', en effet dans le cas contraire, la prochaine action à être appellée le sera dans un onglet fermé et ne pourra pas s'exécuter.
+
 
 .. code-block:: YAML
 
    - EXEMPLE:
       - CloseTab: {'nextAction' : 2}
 
-Action SaveJob
-+++++++++++++++
+Action SaveJob :
+~~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
-   L'action **SaveJob** permet de sauvegarder la page HTML de l'offre d'emploi. Il ne nécessite pas de paramètre. Le programme est chargé d'effectuer la sauvegarde locale puis le transfert sur la base de donnée. Il peut prendre en entrée le paramètre 'maxJobs' de type **int**. Ce paramètre permet de spécifier le nombre d'emplois télécharger. Si le paramètre n'est pas renseigné, la valeur par défaut est fixée à 50 (même en présence d'une action **FindDate**). Si la valeur est fixée à "-1", aucune limitation ne sera levée pour le téléchargement.
+    L'action **SaveJob** permet de sauvegarder la page HTML de l'offre d'emploi. Le programme est chargé d'effectuer la sauvegarde locale puis le transfert sur la base de donnée.
 
-   Paramètre :
+
+    Il peut prendre en entrée le paramètre 'maxJobs' de type **int**. Ce paramètre permet de spécifier le nombre d'emplois télécharger. Si le paramètre n'est pas renseigné. Par défaut, aucune limitation n'est fixée.
+
+    Paramètre :
 
       * 'maxJobs' : variable principale de l'action. Valeur : nombre de jobs à enregistrer, type *int*.
+
+.. note:: Il est possible de spécifier dans le terminal une valeur de 'maxJobs' pour l'ensemble des scénarios. Un 'maxJobs' renseigné dans un scénario sera toujours prioritaire par rapport à celui rentré dans le terminal.
+
+
+    Lors de la rédaction d'un scénario sans action 'FindDate' il est conseillé de fixer une valeur pour le 'maxJobs'. Sinon le programme sauvegardera l'ensemble des offres d'emploi du site à chaque exécution.
 
 .. code-block:: YAML
 
    - EXEMPLE:
-     - SaveJob: {'maxJobs' = -1}
+     - SaveJob: {'maxJobs' = 20}
 
-Action Scroll
-++++++++++++++
+Action Scroll :
+~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
@@ -229,7 +242,7 @@ Action Scroll
       - Scroll : {'size' : 10, 'possibleAction' : 5}
 
 Action FindDate
-++++++++++++++++
+~~~~~~~~~~~~~~~~
 
 .. topic:: Présentation :
 
@@ -253,7 +266,7 @@ Exemple générique d'un scénario
       - GoPage: {'url': "https://www.exemple.com/fr/emplois"} # Navigation jusqu'à la page des offres d'emplois
       - FindDate: {'xpath' : '//div[@id="offres"]//span[@class="date_offre"]', 'persitentIndex', 'possibleAction' : 5} # Recherche de la date de la publication de l'offre d'emploi et dépôt d'un marqueur. Si je ne trouve pas de date, je me rends à l'action 5
       - GoNewTab: {'xpath' : '//a[@class="titre_offre"]','persitentIndex'} # Navigation vers la page de l'offre d'emploi et dépôt d'un marqueur
-      - SaveJob: # Sauvegarde de la page HTML en local de l'offre d'emploi
+      - SaveJob: {} # Sauvegarde de la page HTML en local de l'offre d'emploi
       - CloseTab: {'nextAction' : 1} # Navigation vers la page précédente
       - ClickPage: {'xpath' : '//div[@button="page_suivante"], 'resetIndex' : [1,2], 'nextAction' : 1} # Navigation vers la page suivante des offres d'emploi après l'action 1
 
@@ -288,7 +301,7 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
        - GoPage: {'url': "https://group.bnpparibas/emploi-carriere/toutes-offres-emploi/france"}
        - Scroll: {'size' : 105, 'persistentIndex', 'possibleAction' : 5}
        - GoNewTab: {'xpath' : '//ul[@class="results rh-results"]//li//a', 'persistentIndex', 'possibleAction': 5}
-       - SaveJob: {}
+       - SaveJob: {'maxJobs' : 10}
        - CloseTab: {'nextAction' : 1}
        - ClickPage: {'xpath' : '//div[@class="progress-button elastic show-more"]//button', 'nextAction' : 1, 'possibleAction' : 6}
        - ClickPage: {'xpath' : '//li[@class="next"]//a', 'resetIndex' : [1,2], 'nextAction' : 1}
@@ -320,7 +333,7 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
        - GoPage: {'url' : 'https://jobs.canalplus.com/nos-offres/'}
        - Scroll: {'size' : 100, 'persistentIndex'}
        - GoNewTab: {'xpath' : '//div[@class="JobOffersList_JobOffersList_3A33F"]//li[@class="List_boxed__2cbY8 List_borders_default__2dgLN"]//a', 'persistentIndex'}
-       - SaveJob: {}
+       - SaveJob: {'maxJobs' : 10}
        - CloseTab: {'nextAction' : 1}
 
    .. code-block:: YAML
@@ -328,7 +341,7 @@ Exemples de scénarios / fichier '*scenarii.yaml*'
       - DASSAULT:
        - GoPage: {'url' : 'https://careers.3ds.com/fr/jobs?woc=%7B%22pays%22%3A%5B%22pays%2Ffrance%22%5D%7D'}
        - GoNewTab: {'xpath' : '//article[@class="ds-card ds-card--lines ds-card--image "]/child::a', 'persistentIndex', 'possibleAction' : 4}
-       - SaveJob: {}
+       - SaveJob: {'maxJobs' : 10}
        - CloseTab: {'nextAction' : 1}
        - ClickPage: {'xpath' : '//li[@class="ds-pagination__next"]//a', 'resetIndex' : [1], 'nextAction' : 1}
 

@@ -8,9 +8,12 @@ Documentation du projet industriel ECP : SmartCrawl
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: **Sommaire** :
 
    Ontologie
-   Programme
-   PlanTest
+   Programme/Smartcrawl
    Scenario
+   PlanTest
+
+.. image:: _static/LA.png 
+   :align: center
