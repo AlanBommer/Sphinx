@@ -8,7 +8,7 @@ Documentation du projet industriel ECP : SmartCrawl
 
 .. toctree::
    :maxdepth: 2
-   :caption: **Sommaire** :
+   :caption: Sommaire :
 
    Ontologie
    Smartcrawl
