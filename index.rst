@@ -11,7 +11,7 @@ Documentation du projet industriel ECP : SmartCrawl
    :caption: **Sommaire** :
 
    Ontologie
-   Programme/Smartcrawl
+   Smartcrawl
    Scenario
    PlanTest
 
