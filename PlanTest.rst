@@ -59,8 +59,7 @@ Tests de robustesse :
 Tests d'endurance :
 ~~~~~~~~~~~~~~~~~
 
-    **Objectifs** : Confirmer la capacité du programme à s'adapter aux différents sites visés.
-       - proposition changement NICO: Confirmer la capacité du programme à traiter tous les scénarios, même en cas d'erreur sur un ou plusieurs sites
+    **Objectifs** : Confirmer la capacité du programme à traiter tous les scénarios, même en cas d'erreur sur un ou plusieurs sites
     **Fonctionnement** :
       - Exécuter le programme avec l'ensemble des sites scénarisés du CAC40 et contenant des erreurs volontaires
       - Vérifier que chaque scénario est lu
@@ -79,8 +78,7 @@ Tests de performance :
 	   - On lance le programme afin qu'il crawl l'ensemble des entreprises visées sur une période de 2 mois et en téléchargeant un maximum de 50 offres d'emploi par entreprise
 	   - On mesure le temps total d'éxécution du programme
 
-	**Résultat attendu** :  un temps d'exécution permettant, en production, une exécution durant la nuit.
-	   - proposition NICO: Une durée d'exécution de la totalité des scénarios en moins de 8h (en vue d'un traitement entre 00:00 et 08:00 chaque jour.
+	**Résultat attendu** : Une durée d'exécution de la totalité des scénarios en moins de 8h (en vue d'un traitement entre 00:00 et 08:00 chaque jour.)
 
 Domaines fonctionnels :
 ~~~~~~~~~~~~~~~~~~~~~~~~
