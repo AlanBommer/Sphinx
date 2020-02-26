@@ -56,6 +56,9 @@ Tests de robustesse :
 
    **Résultat attendu** : présence de toutes les erreurs attendues et aucune erreur non-attendue
 
+   .. image:: IMG/TestRobustesse.jpeg
+      :align: center
+
 Tests d'endurance :
 ~~~~~~~~~~~~~~~~~
 
@@ -72,24 +75,24 @@ Tests d'endurance :
 Tests de performance :
 ~~~~~~~~~~~~~~~~~~~~
 
-	**Objectifs** : Estimer le temps mis par le programme pour parcourir l'ensemble des scénarios retenus du CAC40.
+  **Objectifs** : Estimer le temps mis par le programme pour parcourir l'ensemble des scénarios retenus du CAC40.
 
-	**Fonctionnement** :
-	   - On lance le programme afin qu'il crawl l'ensemble des entreprises visées sur une période de 2 mois et en téléchargeant un maximum de 50 offres d'emploi par entreprise
-	   - On mesure le temps total d'éxécution du programme
+  **Fonctionnement** :
+     - On lance le programme afin qu'il crawl l'ensemble des entreprises visées sur une période de 2 mois et en téléchargeant un maximum de 50 offres d'emploi par entreprise
+     - On mesure le temps total d'éxécution du programme
 
-	**Résultat attendu** : Une durée d'exécution de la totalité des scénarios en moins de 8h (en vue d'un traitement entre 00:00 et 08:00 chaque jour.)
+  **Résultat attendu** : Une durée d'exécution de la totalité des scénarios en moins de 8h (en vue d'un traitement entre 00:00 et 08:00 chaque jour.)
 
 Domaines fonctionnels :
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-	L'ensemble des actions de l'ontologie est testé.
+  L'ensemble des actions de l'ontologie est testé.
 
-	On vérifie ainsi la capacité du programme à :
-	   - Se rendre sur tous les sites visés
-	   - Trouver les offres d'emploi
-	   - Les télécharger
-	   - Les envoyer à la base de données
+  On vérifie ainsi la capacité du programme à :
+     - Se rendre sur tous les sites visés
+     - Trouver les offres d'emploi
+     - Les télécharger
+     - Les envoyer à la base de données
 
 Catégorie des résultats :
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -113,9 +116,9 @@ Matériels :
 Données de test :
 ~~~~~~~~~~~~~~~~~~
 
-	Les données, permettant les tests de robustesse, sont les scénarios rédigés dans le module 'Test_robustesse'.
+  Les données, permettant les tests de robustesse, sont les scénarios rédigés dans le module 'Test_robustesse'.
 
-	Les données, permettant les tests d'endurance et de performances, sont les scénarios des entreprises du CAC40.
+  Les données, permettant les tests d'endurance et de performances, sont les scénarios des entreprises du CAC40.
 
 Attribution des participants
 =============================
@@ -123,12 +126,12 @@ Attribution des participants
 Testeurs :
 ~~~~~~~~~~~
 
-	Les tests ont été réalisés par : JOUBIOUX Alan et SCAËROU Nicolas
+  Les tests ont été réalisés par : JOUBIOUX Alan et SCAËROU Nicolas
 
 Chef de test :
 ~~~~~~~~~~~~~~~
 
-	Les tests ont été supervisés par : FABRE Nicolas
+  Les tests ont été supervisés par : FABRE Nicolas
 
 Modes de Tests
 ===============
@@ -136,22 +139,22 @@ Modes de Tests
 Planning :
 ~~~~~~~~~~~
 
-	Les tests ont débuté le 13/02/2020 et se sont conclus le 26/02/2020.
+  Les tests ont débuté le 13/02/2020 et se sont conclus le 26/02/2020.
 
-	Ils se sont déroulés dans l'ordre suivant :
-	   - Tests de robustesse
-	   - Validation de recettes
-	   - Tests d'endurance
-	   - Tests de performance
+  Ils se sont déroulés dans l'ordre suivant :
+     - Tests de robustesse
+     - Validation de recettes
+     - Tests d'endurance
+     - Tests de performance
 
-	Le test de non régression sera effectué aux alentours du 28/02/2020 pendant la période d'intégration par le client.
+  Le test de non régression sera effectué aux alentours du 28/02/2020 pendant la période d'intégration par le client.
 
 Critères d'acceptation :
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-	Les critères d'acceptation sont :
-	   - Validation de la recette : Réussite
-	   - Tests de robustesse : Tolérable
-	   - Test d'endurance : Réussite
-	   - Test de performance : Acceptation
-	   - Test de non régression : Réussite
+  Les critères d'acceptation sont :
+     - Validation de la recette : Réussite
+     - Tests de robustesse : Tolérable
+     - Test d'endurance : Réussite
+     - Test de performance : Acceptation
+     - Test de non régression : Réussite

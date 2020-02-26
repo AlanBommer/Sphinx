@@ -158,6 +158,15 @@ Scénarios du CAC40
 	   - SaveJob: {}
 	   - CloseTab: {'nextAction' : 1}
 
+	- ENGIE:
+	   - GoPage: {'url' : "https://jobs.engie.com/"}
+	   - ClickPage: {'xpath' : '//span[@class="btn_text"]'}
+	   - GoNewTab: {'xpath' : '//div[@id="job_results_list_hldr"]//div[starts-with(@class,"job_list_row")]//div[@class="jlr_title"]//p//a[@class="job_link font_bold"]', 'persistentIndex', 'possibleAction' : 5}
+	   - FindDate: {'xpath' : '//div[@id="jJobInsideInfo"]//ul/li/label'}
+	   - SaveJob: {}
+	   - CloseTab: {'nextAction' : 1}
+	   - ClickPage: {'xpath' : '//div[@class="pagination jPagination"]//a[@class="next"]', 'nextAction' : 2, 'resetIndex': 2}
+
 	- ESSILOR:
 	   - GoPage: {'url': "https://career5.successfactors.eu/career?company=Essilor&career%5fns=job%5flisting%5fsummary&navBarLevel=JOB%5fSEARCH&_s.crb=7V9yhmfeaWq3trQ%2fbKX1RrfhzqA%3d"}
 	   - FindDate: {'xpath' : '//div[@class="noteSection"]//div[1]/child::span[2]', 'persistentIndex', 'possibleAction' : 5}
@@ -214,16 +223,16 @@ Scénarios du CAC40
 
 	- SAINTGOBAIN:
 	   - GoPage: {'url': "https://joinus.saint-gobain.com/fr?country=FR&search=&page=0"}
-	   - FindDate: {'xpath' : '//div[@class="views-row"]//div/a/child::div[5]//div', 'persistentIndex', 'possibleAction' : 5}
+	   - Scroll: {'size' : 200, 'persistentIndex'}
+	   - FindDate: {'xpath' : '//div[@class="views-row"]//div/a/child::div[5]//div', 'persistentIndex', 'possibleAction' : 6}
 	   - GoNewTab: {'xpath' : '//div[@class="views-row"]//div/a', 'persistentIndex'}
 	   - SaveJob: {}
 	   - CloseTab: {'nextAction' : 1}
-	   - ClickPage: {'xpath' : '//li[@class="pager__item pager__item--next"]/a', 'resetIndex' : [1,2], 'nextAction' : 1}
+	   - ClickPage: {'xpath' : '//li[@class="pager__item pager__item--next"]/a', 'resetIndex' : [2,3], 'nextAction' : 1}
 
 	- SCHNEIDER:
 	   - GoPage: {'url': "https://schneiderele.taleo.net/careersection/2/jobsearch.ftl?lang=fr-FR&keyword=&CATEGORY=-1&LOCATION=-1"}
-	   - GoNewTab: {'xpath' : '//ul[@id="jobList"]//li/child::div[2]//div/span/a', 'persistentIndex', 'possibleAction' : 5}
-	   - FindDate: {'xpath' : '//div[@class="editablesection"]//div[@id="requisitionDescriptionInterface.ID1688.row1"]/child::span[2]'}
+	   - GoNewTab: {'xpath' : '//ul[@id="jobList"]//li/child::div[2]//div/span/a', 'persistentIndex', 'possibleAction' : 4}
 	   - SaveJob: {}
 	   - CloseTab: {'nextAction' : 1}
 	   - ClickPage: {'xpath' : '//span[@class="pagerlink"]/a', 'resetIndex' : [1], 'nextAction' : 1}
@@ -243,6 +252,21 @@ Scénarios du CAC40
 	   - SaveJob: {}
 	   - CloseTab: {'nextAction' : 1}
 
+	- STMICRO:
+	   - GoPage: {'url' : "https://chm.tbe.taleo.net/chm03/ats/careers/v2/searchResults?org=MOUSER&cws=40"}
+	   - Scroll: {'size' : 200, 'persistentIndex'}
+	   - Scroll: {'size' : 300, 'persistentIndex'}
+	   - GoNewTab: {'xpath' : '//div[@class="jscroll-inner"]//div//div//div/child::div[2]/h4/a', 'persistentIndex'}
+	   - SaveJob: {}
+	   - CloseTab: {'nextAction' : 1}
+
+	- TECHNIPFMC:
+	   - GoPage: {'url' : "https://careers.hr.technipfmc.com/latest-jobs"}
+	   - Scroll: {'size' : 115, 'persistentIndex'}
+	   - GoNewTab: {'xpath' : '//div[@id="job_results_list_hldr"]//p[1]//a', 'persistentIndex', 'possibleAction' : 1}
+	   - SaveJob: {}
+	   - CloseTab: {'nextAction' : 1}
+	   
 	- THALES:
 	   - GoPage: {'url': "https://jobs.thalesgroup.com/search-jobs?_ga=2.259037065.2075221412.1572629140-455965246.1572429512"}
 	   - FindDate: {'xpath' : '//span[@class="job-date-posted"]', 'persistentIndex', 'possibleAction' : 5}
