@@ -9,7 +9,7 @@ Politique de tests
 ==================
 
 Méthodologie :
-~~~~~~~~~~~~
+~~~~~~~~~~~~~~~
 
    Cinq type de tests sont effectués :
       - Tests fonctionnels
@@ -19,7 +19,7 @@ Méthodologie :
       - Tests de performance
 
 Tests fonctionnels :
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
    **Objectif** : Valider le fonctionnement effectif de chaque module et fonction de SmartCrawl
 
@@ -34,7 +34,7 @@ Tests fonctionnels :
 
 
 Tests de Non-Régression :
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    **Objectif** : Valider la non-régression
 
@@ -43,7 +43,7 @@ Tests de Non-Régression :
    **Résultats attendus** : Plusieurs offres d'emploi ont été téléchargées pour chaque site.
 
 Tests de robustesse :
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
    **Objectif** : Vérifier que le programme réagit comme attendu aux erreurs de rédaction dans les scénarios
 
@@ -60,10 +60,11 @@ Tests de robustesse :
       :align: center
 
 Tests d'endurance :
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~
 
     **Objectifs** : Confirmer la capacité du programme à traiter tous les scénarios, même en cas d'erreur sur un ou plusieurs sites
     **Fonctionnement** :
+    
       - Exécuter le programme avec l'ensemble des sites scénarisés du CAC40 et contenant des erreurs volontaires
       - Vérifier que chaque scénario est lu
       - Vérifier que chaque scénario est exécuté, même en cas d'erreur
@@ -73,7 +74,7 @@ Tests d'endurance :
     **Résultat attendu** : les scénarios sans erreurs volontaires sont tous traités, jusqu'à la fin du fichier des scénarios, même si des erreurs ont eu lieu en cours d'exécution
 
 Tests de performance :
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
   **Objectifs** : Estimer le temps mis par le programme pour parcourir l'ensemble des scénarios retenus du CAC40.
 
@@ -95,7 +96,7 @@ Domaines fonctionnels :
      - Les envoyer à la base de données
 
 Catégorie des résultats :
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    Réussite : conformité aux attentes
 

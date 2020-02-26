@@ -4,7 +4,7 @@ Rédaction des scénarios
 
 
 Introduction
-==============
+=============
 
 Le programme 'SmartCrawl' s'insère au début du processus du 'SmartPath'. Il a pour objectif de parcourir les sites d'entreprises afin de récupérer les offres d'emploi.
 A cet effet, 'SmartCrawl' "visite" les sites listés et "lit" les offres d'emploi, sauvegarde celles qui l'intéresse avant de les transmettre à la base de donnée permettant ensuite à 'SmartPath' de les traiter.
@@ -277,6 +277,7 @@ Recommandations
 
       * Des boucles infinies peuvent être créées lors de la rédaction des 'possibleAction'. Bien veiller à l'enchainement des actions.
       * Il est recommandé de vérifier la synthaxe des scénarios sur le site : 'http://www.yamllint.com/'
+      * Lors de la navigation sur certains sites, des boutons initialement actifs et visibles de l'utilisateur humain peuvent devenir cachés pour ce dernier et rester actifs. Par conséquent, le crawl pourra être potentiellement attiré par eux suivant les xpath renseignés. Par conséquent, il est important de déterminer ces boutons pour insérer un xpath prenant en compte la qualité visible ou non du bouton **OU** insérer un xpath permettant de contourner ce bouton.
 
 
 Exemples de scénarios / fichier '*scenarii.yaml*'
