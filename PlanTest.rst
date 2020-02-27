@@ -54,7 +54,7 @@ Tests de robustesse :
       - On compare les deux fichiers log : celui de référence et celui généré par l'exécution des scénarios
       - La comparaison des deux fichiers permet de vérifier si les erreurs attendues ont bien été générées et si des erreurs non-attendues n'ont pas été générées
 
-   **Résultat attendu** : présence de toutes les erreurs attendues et aucune erreur non-attendue
+   **Résultat attendu** : Présence de toutes les erreurs attendues et aucune erreur non-attendue
 
    .. image:: IMG/TestRobustesse.jpeg
       :align: center
@@ -62,16 +62,14 @@ Tests de robustesse :
 Tests d'endurance :
 ~~~~~~~~~~~~~~~~~~~~
 
-    **Objectifs** : Confirmer la capacité du programme à traiter tous les scénarios, même en cas d'erreur sur un ou plusieurs sites
+    **Objectifs** : Confirmer la capacité du programme à traiter tous les scénarios dans des situations différentes
+
     **Fonctionnement** :
     
-      - Exécuter le programme avec l'ensemble des sites scénarisés du CAC40 et contenant des erreurs volontaires
+      - Exécuter le programme en répartissant l'ensemble des scénarios sur plusieurs requêtes possédant des paramètres différents (contrainte sur la date, le navigateur ou le maxJobs)
       - Vérifier que chaque scénario est lu
-      - Vérifier que chaque scénario est exécuté, même en cas d'erreur
-      - Vérifier que les scénarios sans erreurs sont traités correctement
-      - Vérifier que les scénarios avec erreurs volontaires sont bien recensés en erreur dans les LOGS
 
-    **Résultat attendu** : les scénarios sans erreurs volontaires sont tous traités, jusqu'à la fin du fichier des scénarios, même si des erreurs ont eu lieu en cours d'exécution
+    **Résultat attendu** : Les scénarios sans erreurs volontaires sont tous traités, jusqu'à la fin du fichier des scénarios, même si des erreurs ont eu lieu en cours d'exécution
 
 Tests de performance :
 ~~~~~~~~~~~~~~~~~~~~~~~
