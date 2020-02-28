@@ -1,10 +1,3 @@
-- ACCOR:
-   - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
-   - GoNewTab: {'xpath' : '//li[@class="jobs-list-item"]//a[@class="au-target"]', 'persistentIndex', 'possibleAction': 4}
-   - SaveJob: {}
-   - CloseTab: {'nextAction' : 1}
-   - ClickPage: {'xpath' : '//a[@aria-label="View next page"]','resetIndex' : 1, 'nextAction' : 1}
-
 - AIRBUS:
    - GoPage: {'url': "https://www.airbus.com/careers/search-and-apply/search-for-vacancies.html?filters=filter_2_1072&textsearch=&language=fr"}
    - GoNewTab: {'xpath' : '//div[@class="wrraper"]//div//div//a', 'persistentIndex', 'possibleAction' : 5}
@@ -191,6 +184,14 @@
    - SaveJob: {}
    - CloseTab: {'nextAction' : 1}
 
+- RENAULT:
+   - GoPage: {'url': "https://renault.referrals.selectminds.com/jobs/search/6835261"}
+   - GoNewTab: {'xpath' : '//div[@id="job_results_list_hldr"]//div[starts-with(@id,"job_list")]//div[@class="jlr_title"]//p//a', 'persistentIndex', 'possibleAction' : 5}
+   - FindDate: {'xpath' : '//dd[@class="job_post_date"]//span[@class="field_value"]'}
+   - SaveJob: {}
+   - CloseTab: {'nextAction' : 1}
+   - ClickPage: {'xpath' : '//a[@class="next"]', 'nextAction' : 1, 'resetIndex': [1,2]}
+
 - SAFRAN:
   - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
   - FindDate: {'xpath' : "//span[@class='date']", 'persistentIndex', 'possibleAction' : 6}
@@ -207,7 +208,7 @@
    - GoNewTab: {'xpath' : '//div[@class="views-row"]//div/a', 'persistentIndex'}
    - SaveJob: {}
    - CloseTab: {'nextAction' : 1}
-   - ClickPage: {'xpath' : '//li[@class="pager__item pager__item--next"]/a', 'resetIndex' : [2,3], 'nextAction' : 1}
+   - ClickPage: {'xpath' : '//li[@class="pager__item pager__item--next"]/a', 'resetIndex' : [1,2,3], 'nextAction' : 1}
 
 - SCHNEIDER:
    - GoPage: {'url': "https://schneiderele.taleo.net/careersection/2/jobsearch.ftl?lang=fr-FR&keyword=&CATEGORY=-1&LOCATION=-1"}
