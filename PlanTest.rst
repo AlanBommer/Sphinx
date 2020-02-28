@@ -178,3 +178,8 @@ Remarques suite aux tests
   Voici certains cas que vous pourrez rencontrer :
     - Une erreur concernant un mauvais xpath au beau milieu de crawl. Même si le scénario est bien écrit, cette erreur peut survenir dans de rares cas. Elle est dû au fait que SmartCrawl n'a pas eu le temps de charger totalement la page et donc il n'a pas pu trouver le xpath. Actuellement, un temps arbitraire est défini après chaque action Sélénium de 0.5s ou 1s. En fonction de la machine et des aléas, ce n'est parfois pas suffisant. Nous n'avons pas pu trouver un moyen de régler ce problème via WebDriverWait.
     - Un problème avec 'dateparser'. Le point fort de cette librarie est qu'elle prend en compte de nombreux formats, ce qui permet à SmartCrawl de s'adapter à tous les sites web. Toutefois, nous nous sommes rendus-compte à l'occasion d'1 test le dysfonctionnement suivant : il inverse le jour et le mois. Cela est arrivé alors que le programme avait parsé correctement + de 100 jobs du site web. Pour le forcer à parser les dates en français, vu que nous travaillons seulement avec des offres d'emploi en France, nous effectuons le parsing d'une date correctement formé à chaque exécution.
+
+  Tout le long de nos tests, nous nous sommes appuyés sur un tableau nous permettant de visualiser notre avancement pour chacune des entreprises. Ci-dessous, vous pouvez constater le résultat final. Nous vous laissons nos commentaires ce qui vous permettra de connaître d'éventuels obstacles auxquels vous pourrez être éventuellement confrontés lorsque vous voudrez crawler de nouveaux sites web.
+
+  .. image:: IMG/Etatsscenarios.jpeg
+    :align: center
