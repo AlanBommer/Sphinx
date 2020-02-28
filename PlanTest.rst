@@ -164,7 +164,7 @@ Critères d'acceptation :
   Les critères d'acceptation sont :
      - Validation de la recette : Réussite
      - Test de robustesse : Tolérable
-     - Test d'endurance : Réussite
+     - Test d'endurance : Acceptation
      - Test de performance : Acceptation
      - Test de non régression : Réussite
 
