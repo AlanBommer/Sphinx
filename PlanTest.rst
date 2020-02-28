@@ -4,7 +4,6 @@ Plan de tests
 
 En complément de la gestion des erreurs et du traitement des exceptions implémentés directement dans le code, un plan complet de tests a été réalisé selon la politique, l'environnement, la méthodologie et avec les participants énoncés ci-après.
 
-
 Politique de tests
 ==================
 
@@ -19,7 +18,7 @@ Méthodologie :
       - Test de performance
 
 Test fonctionnel :
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
    **Objectif** : Valider le fonctionnement effectif de chaque module et fonction de SmartCrawl
 
@@ -31,14 +30,8 @@ Test fonctionnel :
 
    **Résultats attendus** : Plusieurs offres d'emploi ont été téléchargées et stockées pour chaque entreprise.
 
-   **Résultat réalisé** :
-    Temps :
-    
-    Erreur(s) : 0
-
-
 Test de Non-Régression :
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
    **Objectif** : Valider la non-régression
 
@@ -47,7 +40,7 @@ Test de Non-Régression :
    **Résultats attendus** : Plusieurs offres d'emploi ont été téléchargées et stockées pour chaque entreprise.
 
 Test de robustesse :
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~
 
    **Objectif** : Vérifier que le programme réagit comme attendu aux erreurs de rédaction dans les scénarios
 
@@ -62,14 +55,12 @@ Test de robustesse :
       :align: center
 
    **Résultat réalisé** :
-    Tests réalisés : 36
-
-    Tests réussis : 36
-
-    Tests échoués : 0
-
+   
+   .. image:: IMG/TestRobustesseResultats.jpeg
+      :align: center
+      
 Test d'endurance :
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
 
     **Objectif** : Confirmer la capacité du programme à traiter tous les scénarios dans des situations différentes
 
@@ -82,11 +73,11 @@ Test d'endurance :
 
     **Résultat réalisé** :
 
-    .. image:: IMG/ResultEndu.png
+    .. image:: IMG/TestEndurance.jpeg
       :align: center
 
 Test de performance :
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
   **Objectif** : Estimer le temps mis par le programme pour parcourir l'ensemble des scénarios retenus du CAC40.
 
@@ -97,9 +88,9 @@ Test de performance :
   **Résultat attendu** : Une durée d'exécution de la totalité des scénarios en moins de 8h (en vue d'un traitement entre 00:00 et 08:00 chaque jour.)
 
   **Résultat réalisé** :
-    Temps :
 
-    Erreur(s) :
+    .. image:: IMG/TestPerformance.jpeg
+      :align: center
 
 Domaines fonctionnels :
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -176,3 +167,14 @@ Critères d'acceptation :
      - Test d'endurance : Réussite
      - Test de performance : Acceptation
      - Test de non régression : Réussite
+
+Remarques suite aux tests
+==========================
+
+  Vous détenez la version 1 de SmartCrawl.
+
+  Bien que tous les tests individuels soient passés avec succès, nous nous sommes aperçus de quelques dysfonctionnements lors des tests d'endurance
+
+  Voici certains cas que vous pourrez rencontrer :
+    - Une erreur concernant un mauvais xpath au beau milieu de crawl. Même si le scénario est bien écrit, cette erreur peut survenir dans de rares cas. Elle est dû au fait que SmartCrawl n'a pas eu le temps de charger totalement la page et donc il n'a pas pu trouver le xpath. Actuellement, un temps arbitraire est défini après chaque action Sélénium de 0.5s ou 1s. En fonction de la machine et des aléas, ce n'est parfois pas suffisant. Nous n'avons pas pu trouver un moyen de régler ce problème via WebDriverWait.
+    - Un problème avec 'dateparser'. Le point fort de cette librarie est qu'elle prend en compte de nombreux formats, ce qui permet à SmartCrawl de s'adapter à tous les sites web. Toutefois, nous nous sommes rendus-compte à l'occasion d'1 test le dysfonctionnement suivant : il inverse le jour et le mois. Cela est arrivé alors que le programme avait parsé correctement + de 100 jobs du site web. Pour le forcer à parser les dates en français, vu que nous travaillons seulement avec des offres d'emploi en France, nous effectuons le parsing d'une date correctement formé à chaque exécution.

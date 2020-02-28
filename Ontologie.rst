@@ -280,78 +280,10 @@ Recommandations
       * Lors de la navigation sur certains sites, des boutons initialement actifs et visibles de l'utilisateur humain peuvent devenir cachés pour ce dernier et rester actifs. Par conséquent, le crawl pourra être potentiellement attiré par eux suivant les xpath renseignés. Par conséquent, il est important de déterminer ces boutons pour insérer un xpath prenant en compte la qualité visible ou non du bouton **OU** insérer un xpath permettant de contourner ce bouton.
 
 
-Exemples de scénarios / fichier '*scenarii.yaml*'
-==================================================
+Exemples de scénarios / fichier '*scenariiCAC40.yaml*'
+=======================================================
 
-.. topic:: scenarii.yaml :
+Vous trouverez en lien les scénarios du CAC40 pris en compte par SmartCrawl.
 
-   .. code-block:: YAML
+:ref:`ScenariiCAC40`
 
-     - SAFRAN:
-        - GoPage: {'url': "https://www.safran-group.com/fr/emplois?pays=France"}
-        - FindDate: {'xpath' : "//span[@class='date']", 'persistentIndex', 'possibleAction' : 6}
-        - Scroll: {'size': 100, 'persistentIndex'}
-        - GoNewTab: {'xpath' : "//a[@class='offer-card']", persistentIndex}
-        - SaveJob: {}
-        - CloseTab: {'nextAction' : 1}
-        - ClickPage: {'xpath' : "//li[@class='next']//a", 'nextAction' : 1, 'resetIndex': [1,3]}
-
-   .. code-block:: YAML
-
-      - BNP:
-       - GoPage: {'url': "https://group.bnpparibas/emploi-carriere/toutes-offres-emploi/france"}
-       - Scroll: {'size' : 105, 'persistentIndex', 'possibleAction' : 5}
-       - GoNewTab: {'xpath' : '//ul[@class="results rh-results"]//li//a', 'persistentIndex', 'possibleAction': 5}
-       - SaveJob: {'maxJobs' : 10}
-       - CloseTab: {'nextAction' : 1}
-       - ClickPage: {'xpath' : '//div[@class="progress-button elastic show-more"]//button', 'nextAction' : 1, 'possibleAction' : 6}
-       - ClickPage: {'xpath' : '//li[@class="next"]//a', 'resetIndex' : [1,2], 'nextAction' : 1}
-
-
-   .. code-block:: YAML
-
-      - SODEXO:
-       - GoPage: {'url': "https://sodexo-recrute.talent-soft.com/accueil.aspx?LCID=1036"}
-       - FindDate: {'xpath' : '//ul[@class="ts-offer-card-content__list "]/child::li[2]', 'persistentIndex', 'nextAction' : -1}
-       - GoNewTab: {'xpath' : '//a[@class="ts-offer-card__title-link  "]', 'persistentIndex'}
-       - SaveJob: {}
-       - CloseTab: {'nextAction' : 1}
-
-   .. code-block:: YAML
-
-      - TOTAL:
-       - GoPage: {'url' : 'https://krb-sjobs.brassring.com/tgnewui/search/home/home?partnerid=30080&siteid=6559#Pays=France&keyWordSearch='}
-       - ClickPage: {'xpath' : "//button[@id='searchControls_BUTTON_2']"}
-       - FindDate: {'xpath' : "//p[@class='jobProperty position1']", 'persistentIndex', 'possibleAction' : 6}
-       - GoNewTab: {'xpath' : "//a[@class='jobProperty jobtitle']", 'persistentIndex'}
-       - SaveJob: {}
-       - CloseTab: {'nextAction' : 2}
-       - ClickPage: {'xpath' : "//a[@id='showMoreJobs']", 'nextAction' : 2, 'resetIndex' : [2,3]}
-
-   .. code-block:: YAML
-
-      - CANAL:
-       - GoPage: {'url' : 'https://jobs.canalplus.com/nos-offres/'}
-       - Scroll: {'size' : 100, 'persistentIndex'}
-       - GoNewTab: {'xpath' : '//div[@class="JobOffersList_JobOffersList_3A33F"]//li[@class="List_boxed__2cbY8 List_borders_default__2dgLN"]//a', 'persistentIndex'}
-       - SaveJob: {'maxJobs' : 10}
-       - CloseTab: {'nextAction' : 1}
-
-   .. code-block:: YAML
-
-      - DASSAULT:
-       - GoPage: {'url' : 'https://careers.3ds.com/fr/jobs?woc=%7B%22pays%22%3A%5B%22pays%2Ffrance%22%5D%7D'}
-       - GoNewTab: {'xpath' : '//article[@class="ds-card ds-card--lines ds-card--image "]/child::a', 'persistentIndex', 'possibleAction' : 4}
-       - SaveJob: {'maxJobs' : 10}
-       - CloseTab: {'nextAction' : 1}
-       - ClickPage: {'xpath' : '//li[@class="ds-pagination__next"]//a', 'resetIndex' : [1], 'nextAction' : 1}
-
-   .. code-block:: YAML
-
-      - ACCOR:
-       - GoPage: {'url' : 'https://careers.accor.com/Job-vacancy/France,s,4,1.1.html'}
-       - FindDate: {'xpath' : '//li[@class="date"]//a/following-sibling::span', 'persistentIndex', 'possibleAction' : 5}
-       - GoNewTab: {'xpath' : '//li[@class="labelOffer"]//a[1]', 'persistentIndex'}
-       - SaveJob: {}
-       - CloseTab: {'nextAction' : 1}
-       - ClickPage: {'xpath' : '//ul[@class="nextPage"]//a','resetIndex' : [1,2], 'nextAction' : 1}
